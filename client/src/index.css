@@ -1,0 +1,44 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  scroll-behavior: smooth;
+  font-family: 'Figtree Variable',
+    sans-serif;
+}
+
+:root {
+
+  line-height: 1.5;
+  font-weight: 400;
+  color-scheme: light dark;
+  /* color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424; */
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  --font-figtree: 'Figtree Variable',
+    sans-serif;
+  --sky-100: #D2E0FB;
+  --sky-200: #8EACCD;
+  --sky-300: #131635;
+  --cream-100: #FEF9D9;
+  --cream-200: #DEE5D4;
+}
+
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+.CodeMirror,
+.CodeMirror-scroll {
+  max-height: 200px;
+  min-height: 200px;
+}
