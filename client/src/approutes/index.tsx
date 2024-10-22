@@ -174,7 +174,7 @@ export default function AppRoutes() {
               user?.firstName,
               user?.employeeId as string
             );
-            const userActivities = await employeeData.getAnEmployee(
+            const userActivities = employeeData.getAnEmployee(
               user?.firstName as string,
               user?.employeeId as string
             );

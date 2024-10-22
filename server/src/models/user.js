@@ -22,7 +22,7 @@ const userSchema = new Schema(
     },
     bio: {
       type: String,
-      default: "Nothing to see here"
+      default: "Nothing to see here",
     },
     firstName: {
       type: String,
@@ -46,7 +46,7 @@ const userSchema = new Schema(
       type: String,
       enum: ["human resources", "operations", "marketing", "products"],
     },
-    jobType:  {
+    jobType: {
       type: String,
       enum: ["full-time", "part-time", "contract", "hybrid", "remote"],
       default: "full-time",
@@ -110,6 +110,12 @@ const userSchema = new Schema(
     leaveCount: {
       type: Number,
       default: 20,
+    },
+    salary: {
+      type: Number,
+    },
+    allowance: {
+      type: Number,
     },
   },
   {

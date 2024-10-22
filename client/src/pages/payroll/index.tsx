@@ -35,13 +35,11 @@ export default function Payroll() {
   };
 
   const searchPayrollFilterQuery = (query: string) => {
-    const nn = formatEditDate(query)
+    const nn = query
     setSelectQuery(nn as string);
     navigate(`/payroll/search?query=${nn}`);
   };
-  console.log(data);
   
-
   return (
     <>
       <Helmet>

@@ -1,9 +1,4 @@
-import {
-  ActionButton,
-  FormInput,
-  FormSelect,
-  Headings,
-} from "@/components";
+import { ActionButton, FormInput, FormSelect, Headings } from "@/components";
 import { Userinfo } from "@/types/user";
 import { inputFields, validators } from "@/utils";
 import { TextArea } from "@radix-ui/themes";
@@ -51,7 +46,11 @@ export function Component() {
         employeeName.includes(item.firstName.concat(" ", item.lastName))
       );
       const getEmployeeId = getEmployee.map((item) => item.employeeId);
+      const getEmployeeSalary = getEmployee.map((item) => item.salary);
+      const getEmployeeAllowance = getEmployee.map((item) => item.allowance);
       setValue("employeeId", getEmployeeId);
+      setValue("salary", getEmployeeSalary);
+      setValue("allowance", getEmployeeAllowance);
     }
   }, [data.employees, employeeName, setValue]);
 

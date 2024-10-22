@@ -59,7 +59,7 @@ export default function TableData({
 
   const deleteEmployee = useCallback(
     async (id: string) => {
-      await fetcher.submit(
+      fetcher.submit(
         { id: id as string },
         {
           method: "delete",
@@ -130,7 +130,7 @@ export default function TableData({
                   <div>
                     <RouterLink
                       to={`/employees/${user.firstName.toLowerCase()}/${user.employeeId}`}
-                      className="text-lg text-default-400 cursor-pointer active:opacity-50"
+                      className="text-lg text-sky-600 cursor-pointer active:opacity-50"
                       text={<FaEye />}
                     />
                   </div>
@@ -140,7 +140,7 @@ export default function TableData({
                     <div>
                       <RouterLink
                         to={`/settings/profile/${user.firstName.toLowerCase()}/${user.employeeId}`}
-                        className="text-lg text-default-400 cursor-pointer active:opacity-50"
+                        className="text-lg text-teal-300 cursor-pointer active:opacity-50"
                         text={<FaEdit />}
                       />
                     </div>
@@ -152,7 +152,7 @@ export default function TableData({
                       <div className="flex gap-1 items-center">
                         <RiErrorWarningFill
                           size="28px"
-                          className="text-red-500"
+                          className="text-red-400"
                         />
                         <div>Warning</div>
                       </div>

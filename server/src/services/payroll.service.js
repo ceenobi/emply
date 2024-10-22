@@ -1,4 +1,5 @@
 import Payroll from "../models/payroll.js";
+import User from "../models/user.js";
 import { generatePayrollId, getMonthValue } from "../utils/generateRandomId.js";
 export const createPayroll = async (user, payrollBody) => {
   const {
@@ -37,6 +38,10 @@ export const createPayroll = async (user, payrollBody) => {
       comment ||
       `A payroll has been opened for you for the month of ${getMonthValue()}`,
   });
+  const getUser = await User.findOne({ employeeId: employeeId });
+  getUser.salary = salary;
+  getUser.allowance = allowance;
+  await getUser.save();
   const payroll = await newPayroll.save();
   return payroll;
 };

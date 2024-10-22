@@ -1,6 +1,6 @@
 import { DataSpinner, Headings, Texts } from "@/components";
 import { Userinfo } from "@/types/user";
-import { Avatar, Badge, Tooltip } from "@radix-ui/themes";
+import { Avatar, Badge, Card, Tooltip } from "@radix-ui/themes";
 import { Suspense } from "react";
 import { Helmet } from "react-helmet-async";
 import { FaPen, FaPhone } from "react-icons/fa6";
@@ -43,16 +43,20 @@ export function Component() {
               return (
                 <>
                   <div className="my-8 md:flex w-full justify-between gap-8">
-                    <div className="bg-sky-100 p-6 rounded-xl text-center w-full md:w-[40%] mb-8">
-                      <Avatar
-                        alt={fullName}
-                        fallback={user.firstName.slice(0, 1)}
-                        variant="soft"
-                        size="8"
-                        src={user.photo}
-                        className="mb-4 text-center"
-                        color="ruby"
-                      />
+                    <Card
+                      variant="surface"
+                      className="bg-sky-100 p-6 rounded-xl text-center w-full md:w-[40%] mb-8"
+                    >
+                      <div className="mb-4 text-center">
+                        <Avatar
+                          alt={fullName}
+                          fallback={user.firstName.slice(0, 1)}
+                          variant="soft"
+                          size="8"
+                          src={user.photo}
+                          color="ruby"
+                        />
+                      </div>
                       <Texts
                         text={fullName}
                         className="text-center text-xl font-bold text-sky-300"
@@ -65,17 +69,19 @@ export function Component() {
                         text={<>{user.dept} department</>}
                         className="mb-2 text-center font-semibold text-gray-700 capitalize"
                       />
-                      <Badge
-                        variant="soft"
-                        radius="full"
-                        size="3"
-                        style={{
-                          backgroundColor: "var(--sky-300)",
-                          color: "var(--cream-200)",
-                        }}
-                      >
-                        ID: {user.employeeId}
-                      </Badge>
+                      <div className="text-center">
+                        <Badge
+                          variant="soft"
+                          radius="full"
+                          size="3"
+                          style={{
+                            backgroundColor: "var(--sky-300)",
+                            color: "var(--cream-200)",
+                          }}
+                        >
+                          ID: {user.employeeId}
+                        </Badge>
+                      </div>
                       <Texts
                         text={
                           <div className="flex gap-2 justify-center items-center">
@@ -87,7 +93,7 @@ export function Component() {
                       />
                       <div className="mt-6">
                         <Tooltip content={user.email}>
-                          <span className="flex items-center mx-auto gap-1 border border-sky-200 text-sky-300 p-3 rounded-full w-[fit-content]">
+                          <span className="flex items-center mx-auto gap-1 border border-sky-200 text-sky-300 p-3 rounded-full w-[fit-content] hover:bg-red-400 hover:border-0">
                             <a
                               href={`mailto:${user.email}`}
                               className="text-sm font-semibold"
@@ -98,8 +104,11 @@ export function Component() {
                           </span>
                         </Tooltip>
                       </div>
-                    </div>
-                    <div className="border p-6 rounded-xl md:w-[58%] mb-8 text-sky-300">
+                    </Card>
+                    <Card
+                      variant="surface"
+                      className="p-6 rounded-xl md:w-[58%] mb-8 text-sky-300"
+                    >
                       <div>
                         <Headings
                           text="Bio"
@@ -128,7 +137,7 @@ export function Component() {
                           }
                         />
                       </div>
-                    </div>
+                    </Card>
                   </div>
                 </>
               );

@@ -41,15 +41,9 @@ export const createEmployeePayroll = tryCatch(async (req, res, next) => {
   if (!user) {
     return next(createHttpError(404, "User not found"));
   }
-  const payrollUser = await Payroll.findOne({ employeeId });
   const getPayrollDate = await Payroll.findOne({ payrollDate });
-  if (payrollUser && getPayrollDate) {
-    return next(
-      createHttpError(
-        404,
-        "Employee has already been added to the payroll date"
-      )
-    );
+  if (getPayrollDate) {
+    return next(createHttpError(404, "Payroll date already exists"));
   }
   const payrollBody = {
     employeeId,
@@ -248,13 +242,22 @@ export const searchPayroll = tryCatch(async (req, res, next) => {
   if (!query) {
     return next(createHttpError(400, "Search query is required"));
   }
+  const dateQuery = new Date(query.toString());
+  console.log(dateQuery);
+  
+  const isDateQuery = !isNaN(dateQuery.getTime());
   const sanitizeQuery = query.toLowerCase().replace(/[^\w\s]/gi, "");
   const page = parseInt(req.query.page) || 1;
   const limit = parseInt(req.query.limit) || 20;
   const skipCount = (page - 1) * limit;
   const count = await Payroll.countDocuments();
   const totalPages = Math.ceil(count / limit);
-  const payroll = await Payroll.find({ $text: { $search: sanitizeQuery } })
+  const payroll = await Payroll.find({
+    $or: [
+      { $text: { $search: sanitizeQuery } },
+      isDateQuery ? { payrollDate: { $eq: dateQuery.toString() } } : {}, 
+    ],
+  })
     .populate("userId", "photo firstName lastName")
     .sort({ _id: -1 })
     .skip(skipCount)

@@ -40,6 +40,8 @@ export type Userinfo = {
   jobType?: string;
   maritalStatus?: string;
   dateOfBirth?: string;
+  salary?: number;
+  allowance?: number;
   address?: {
     homeAddress?: string;
     state?: string;

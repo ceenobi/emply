@@ -29,7 +29,11 @@ export function Component() {
         onClick={() => navigate("/payroll")}
       />
       <div className="mt-6 flex justify-between items-center">
-        <Headings text={`Search results for: "${query}"`} header={true} />
+        <Headings
+          text={`Search results for: "${query}"`}
+          header={true}
+          className="text-[24px]"
+        />
       </div>
       <div className="mt-6">
         <Suspense fallback={<DataSpinner />}>
