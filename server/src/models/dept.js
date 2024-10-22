@@ -9,6 +9,9 @@ const deptSchema = new Schema(
       type: String,
       required: true,
     },
+   hod: {
+    type: String,
+   }
   },
   {
     timestamps: true,
