@@ -273,6 +273,10 @@ export default function AppRoutes() {
             },
           ],
         },
+        {
+          path: "departments",
+          lazy: () => import("@/pages/departments"),
+        }
       ],
     },
     {

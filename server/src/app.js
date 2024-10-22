@@ -1,3 +1,4 @@
+import dotenv from "dotenv";
 import express, { json } from "express";
 import createHttpError, { isHttpError } from "http-errors";
 import morgan from "morgan";
@@ -13,6 +14,7 @@ import userRoutes from "./routes/user.js";
 import leaveRoutes from "./routes/leave.js";
 import payrollRoutes from "./routes/payroll.js";
 
+dotenv.config();
 const app = express();
 cloudinary.config({
   cloud_name: env.CLOUDINARY_NAME,
