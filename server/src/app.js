@@ -28,7 +28,6 @@ const corsOptions = {
   optionsSuccessStatus: 200,
   methods: ["GET", "POST", "PATCH", "DELETE"],
   credentials: true,
-  exposedHeaders: ["Set-Cookie"],
 };
 app.use(cors(corsOptions));
 app.use(morgan("dev"));
@@ -41,10 +40,10 @@ app.use(
     saveUninitialized: false,
     cookie: {
       maxAge: 60 * 60 * 1000,
-      secure: true,
-      sameSite: "None",
-      httpOnly: true,
-      path: "/",
+      // secure: process.env.NODE_ENV === "production",
+      // sameSite: "None",
+      // httpOnly: true,
+      // path: "/",
     },
     rolling: true,
     store: MongoStore.create({
@@ -56,6 +55,14 @@ app.use(
 app.disable("x-powered-by");
 app.get("/", (req, res) => {
   res.send("Hello express");
+});
+
+// Middleware to handle session errors
+app.use((req, res, next) => {
+  if (!req.session) {
+    return next(createHttpError(500, "Session not initialized"));
+  }
+  next();
 });
 
 app.use("/api/v1/auth", authRoutes);
