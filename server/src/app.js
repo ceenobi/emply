@@ -45,7 +45,6 @@ app.use(
     cookie: {
       maxAge: 60 * 60 * 1000,
       secure: true, // Ensure this is true if using HTTPS
-      sameSite: "None", // Set to 'None' to allow cross-site cookies
     },
     rolling: true,
     store: MongoStore.create({
