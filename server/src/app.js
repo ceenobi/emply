@@ -24,14 +24,11 @@ cloudinary.config({
 });
 
 const corsOptions = {
-  origin: [
-    "http://localhost:5173",
-    "http://localhost:5174",
-    "https://emply-server.vercel.app",
-  ],
+  origin: ["http://localhost:5173", "http://localhost:5174"],
   optionsSuccessStatus: 200,
   methods: ["GET", "POST", "PATCH", "DELETE"],
   credentials: true,
+  exposedHeaders: ["Set-Cookie"],
 };
 app.use(cors(corsOptions));
 app.use(morgan("dev"));
@@ -44,9 +41,10 @@ app.use(
     saveUninitialized: false,
     cookie: {
       maxAge: 60 * 60 * 1000,
-      secure: true, // Ensure this is true if using HTTPS
-      sameSite: "None", // Set to 'None' to allow cross-site cookies
-      httpOnly: true, // Ensure this is true to prevent client-side JavaScript from accessing cookies, 
+      secure: true,
+      sameSite: "None",
+      httpOnly: true,
+      path: "/",
     },
     rolling: true,
     store: MongoStore.create({
