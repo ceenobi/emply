@@ -9,6 +9,17 @@ router.post(
   requiresAuth(Roles.Admin),
   DeptController.createDepartment
 );
-router.get("/", DeptController.getDepartments);
+router.get("/", requiresAuth(Roles.All), DeptController.getDepartments);
+router.get(
+  "/:departmentName",
+  requiresAuth(Roles.Admin),
+  DeptController.getADepartment
+);
+
+router.patch(
+  "/update/:departmentId",
+  requiresAuth(Roles.Admin),
+  DeptController.updateDepartment
+);
 
 export default router;

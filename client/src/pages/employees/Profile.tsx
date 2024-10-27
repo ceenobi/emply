@@ -4,8 +4,7 @@ import { Avatar, Badge, Card, Tooltip } from "@radix-ui/themes";
 import { Suspense } from "react";
 import { Helmet } from "react-helmet-async";
 import { FaPen, FaPhone } from "react-icons/fa6";
-import { IoMdArrowDropleftCircle } from "react-icons/io";
-import { Await, useLoaderData, useParams, useNavigate } from "react-router-dom";
+import { Await, useLoaderData, useParams} from "react-router-dom";
 
 type dataType = {
   data: {
@@ -15,7 +14,6 @@ type dataType = {
 };
 export function Component() {
   const { firstName } = useParams();
-  const navigate = useNavigate();
   const { data } = useLoaderData() as dataType;
 
   return (
@@ -24,11 +22,6 @@ export function Component() {
         <title>{firstName + "'s"} profile</title>
         <meta name="description" content="Profile view" />
       </Helmet>
-      <IoMdArrowDropleftCircle
-        className="text-2xl text-sky-300 cursor-pointer"
-        role="button"
-        onClick={() => navigate(-1)}
-      />
       <div className="mt-6">
         <Suspense fallback={<DataSpinner />}>
           <Await

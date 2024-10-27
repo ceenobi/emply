@@ -70,10 +70,10 @@ export default function PayrollCard({
           />
           <Texts
             text={
-              <div className="flex items-center gap-1">
-                {item.percentage > "50%" ? <FaArrowUp /> : <FaArrowDown />}{" "}
+              <span className="flex items-center gap-1">
+                {item.percentage > "50%" ? <FaArrowUp /> : <FaArrowDown />}
                 {item.percentage}
-              </div>
+              </span>
             }
             className="text-sky-300 font-semibold"
           />

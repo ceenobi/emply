@@ -5,13 +5,14 @@ import { TextArea } from "@radix-ui/themes";
 import { useEffect } from "react";
 import { Helmet } from "react-helmet-async";
 import { useForm } from "react-hook-form";
-import { IoMdArrowDropleftCircle } from "react-icons/io";
 import { useNavigate, useFetcher, useRouteLoaderData } from "react-router-dom";
 import { toast } from "sonner";
 
 export function Component() {
-  const { data } = useRouteLoaderData("payrollEmployees") as {
-    data: { employees: Userinfo[] };
+  const {
+    employees: { data },
+  } = useRouteLoaderData("departments-employees") as {
+    employees: { data: Userinfo[] };
   };
   const navigate = useNavigate();
   const fetcher = useFetcher();
@@ -28,7 +29,7 @@ export function Component() {
   const formFields1 = ["employeeId", "payrollDate", "salary", "allowance"];
   const formFields2 = ["deductions", "tax", "lateDays", "lwp"];
 
-  const filterEmployeeNames = data?.employees.map((item: Userinfo) =>
+  const filterEmployeeNames = data?.map((item: Userinfo) =>
     item.firstName.concat(" ", item.lastName)
   );
 
@@ -42,7 +43,7 @@ export function Component() {
 
   useEffect(() => {
     if (employeeName) {
-      const getEmployee = data.employees.filter((item) =>
+      const getEmployee = data.filter((item) =>
         employeeName.includes(item.firstName.concat(" ", item.lastName))
       );
       const getEmployeeId = getEmployee.map((item) => item.employeeId);
@@ -52,7 +53,7 @@ export function Component() {
       setValue("salary", getEmployeeSalary);
       setValue("allowance", getEmployeeAllowance);
     }
-  }, [data.employees, employeeName, setValue]);
+  }, [data, employeeName, setValue]);
 
   useEffect(() => {
     if (fetcher && fetcher.data && fetcher.data?.status === 201) {
@@ -76,12 +77,6 @@ export function Component() {
           content="Add a new worker to the salary payroll."
         />
       </Helmet>
-
-      <IoMdArrowDropleftCircle
-        className="text-2xl text-sky-300 cursor-pointer"
-        role="button"
-        onClick={() => navigate("/payroll")}
-      />
       <Headings className="my-8" text="Add payroll" header={true} />
       <div className="py-4 px-2">
         <fetcher.Form

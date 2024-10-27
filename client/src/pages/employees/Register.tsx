@@ -12,8 +12,9 @@ import { toast } from "sonner";
 export default function Register() {
   const [isVisible, setIsVisible] = useState(false);
   const { data } = useRouteLoaderData("departments") as {
-    data: DepartmentsData;
+    data: { departments: DepartmentsData };
   };
+
   const navigate = useNavigate();
   const fetcher = useFetcher();
   const {
@@ -23,7 +24,7 @@ export default function Register() {
     control,
   } = useForm();
   const isSubmitting = fetcher.state === "submitting";
-  const departments = data;
+  const departments = data?.departments;
 
   useEffect(() => {
     if (fetcher && fetcher.data && fetcher.data?.status === 201) {

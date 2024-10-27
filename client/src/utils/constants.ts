@@ -333,6 +333,16 @@ export const inputFields = [
     validate: (value: string) => validateField(value, "This field is required"),
     isRequired: true,
   },
+  {
+    label: "Department Name",
+    type: "text",
+    id: "name",
+    name: "name",
+    placeholder: "sales",
+    Icon: RxPerson,
+    validate: (value: string) => validateField(value, "This field is required"),
+    isRequired: true,
+  },
 ];
 
 export const gender = [

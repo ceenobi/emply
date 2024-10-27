@@ -17,6 +17,8 @@ import * as leaveData from "@/pages/leaves/queries";
 import * as eventData from "@/pages/events/queries";
 import * as payrollData from "@/pages/payroll/queries";
 import * as settingsData from "@/pages/settings/queries";
+import * as departmentData from "@/pages/departments/queries";
+import * as departmentAction from "@/pages/departments/actions";
 import * as employeeAction from "@/pages/employees/actions";
 import * as leaveAction from "@/pages/leaves/actions";
 import * as eventAction from "@/pages/events/actions";
@@ -31,6 +33,8 @@ const RegisterEmployee = lazy(() => import("@/pages/employees/Register"));
 const AllLeavesPage = lazy(() => import("@/pages/leaves/AllLeaves"));
 const VerifyAccount = lazy(() => import("@/pages/auth/VerifyAccount"));
 const Payroll = lazy(() => import("@/pages/payroll"));
+const CreateDepartment = lazy(() => import("@/pages/departments/Create"));
+const EditDepartment = lazy(() => import("@/pages/departments/Edit"));
 
 export default function AppRoutes() {
   const { user } = useAuthProvider() as {
@@ -40,7 +44,7 @@ export default function AppRoutes() {
   const routes = [
     {
       path: "/",
-      id: "departments",
+      id: "departments-employees",
       element: (
         <PrivateRoutes>
           <Suspense fallback={<LazySpinner />}>
@@ -48,7 +52,13 @@ export default function AppRoutes() {
           </Suspense>
         </PrivateRoutes>
       ),
-      loader: employeeData.getDepartments,
+      loader: async () => {
+        const [depts, employees] = await Promise.all([
+          departmentData.getDepartments(),
+          employeeData.getEmployees(),
+        ]);
+        return { depts, employees };
+      },
       children: [
         {
           path: "employees",
@@ -237,14 +247,7 @@ export default function AppRoutes() {
           children: [
             {
               path: "create",
-              id: "payrollEmployees",
               lazy: () => import("@/pages/payroll/Create"),
-              loader: async ({ request }) => {
-                const searchParams = new URL(request.url).searchParams;
-                const page = searchParams.get("page") || 1;
-                const data = await employeeData.getAllEmployees(page);
-                return data;
-              },
               action: payrollAction.createPayrollAction,
             },
             {
@@ -276,7 +279,50 @@ export default function AppRoutes() {
         {
           path: "departments",
           lazy: () => import("@/pages/departments"),
-        }
+          children: [
+            {
+              path: ":departmentName",
+              lazy: () => import("@/pages/departments/EmployeeDept"),
+              loader: ({ params, request }) => {
+                const searchParams = new URL(request.url).searchParams;
+                const page = searchParams.get("page") || 1;
+                const data = departmentData.getEmployeesByDept(
+                  params.departmentName as string,
+                  page
+                );
+                return defer({ data });
+              },
+            },
+            {
+              path: "create",
+              element: (
+                <Suspense fallback={<LazySpinner />}>
+                  <AdminRoutes>
+                    <CreateDepartment />
+                  </AdminRoutes>
+                </Suspense>
+              ),
+              action: departmentAction.createDepartmentAction,
+            },
+            {
+              path: "edit/:departmentName",
+              element: (
+                <Suspense fallback={<LazySpinner />}>
+                  <AdminRoutes>
+                    <EditDepartment />
+                  </AdminRoutes>
+                </Suspense>
+              ),
+              loader: async ({ params }) => {
+                const data = await departmentData.getADepartment(
+                  params.departmentName as string
+                );
+                return data;
+              },
+              action: departmentAction.updateDepartmentAction,
+            },
+          ],
+        },
       ],
     },
     {

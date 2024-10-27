@@ -25,7 +25,7 @@ export function Component() {
   const { user } = useAuthProvider() as { user: Userinfo };
   const match = useMatch("/employees");
   const { data } = useLoaderData() as { data: Userinfo };
-
+  const roles = ["admin", "super-admin"];
   const resetFilter = () => {
     setDept("");
     setRole("");
@@ -44,15 +44,15 @@ export function Component() {
           <>
             <div className="flex justify-between items-center">
               <Headings text="Employees" header={true} />
-              {user.role.includes("super-admin") && (
+              {roles.includes(user.role) && (
                 <RouterLink
                   to="/employees/register"
-                  className="text-md font-semibold text-sky-100 bg-sky-300 p-2 rounded-lg dark:bg-cream-100 dark:text-sky-300"
+                  className="text-sm font-semibold text-sky-100"
                   text={
-                    <div className="flex justify-center items-center gap-2 w-[150px] ">
+                    <button className="flex justify-center items-center gap-2 w-[140px] h-[36px] bg-sky-300 rounded-md">
                       <AiOutlinePlusCircle />
-                      Add Employee
-                    </div>
+                      Add
+                    </button>
                   }
                 />
               )}
@@ -69,83 +69,100 @@ export function Component() {
                     <>
                       {resolvedData.data.employees.length > 0 ? (
                         <>
-                          <div className="flex flex-wrap gap-6">
-                            <Texts text="filters:" className="font-semibold" />
-                            <Select.Root
-                              size="2"
-                              value={jobTitle}
-                              onValueChange={setJobTitle}
-                            >
-                              <Select.Trigger
-                                variant="soft"
-                                placeholder="Job title"
+                          <div className="flex flex-wrap justify-between items-center ">
+                            <div className="flex flex-wrap gap-6">
+                              <Texts
+                                text="filters:"
+                                className="font-semibold"
                               />
-                              <Select.Content>
-                                {selectJobTitle.map((item) => (
-                                  <Select.Item value={item.name} key={item._id}>
-                                    {item.name}
-                                  </Select.Item>
-                                ))}
-                              </Select.Content>
-                            </Select.Root>
-                            <Select.Root
-                              size="2"
-                              value={role}
-                              onValueChange={setRole}
-                            >
-                              <Select.Trigger
+                              <Select.Root
+                                size="2"
+                                value={jobTitle}
+                                onValueChange={setJobTitle}
+                              >
+                                <Select.Trigger
+                                  variant="soft"
+                                  placeholder="Job title"
+                                />
+                                <Select.Content>
+                                  {selectJobTitle.map((item) => (
+                                    <Select.Item
+                                      value={item.name}
+                                      key={item._id}
+                                    >
+                                      {item.name}
+                                    </Select.Item>
+                                  ))}
+                                </Select.Content>
+                              </Select.Root>
+                              <Select.Root
+                                size="2"
+                                value={role}
+                                onValueChange={setRole}
+                              >
+                                <Select.Trigger
+                                  variant="soft"
+                                  placeholder="Job role"
+                                />
+                                <Select.Content>
+                                  {employeeRole.map((item) => (
+                                    <Select.Item
+                                      value={item.name}
+                                      key={item._id}
+                                    >
+                                      {item.name}
+                                    </Select.Item>
+                                  ))}
+                                </Select.Content>
+                              </Select.Root>
+                              <Select.Root
+                                size="2"
+                                value={dept}
+                                onValueChange={setDept}
+                              >
+                                <Select.Trigger
+                                  variant="soft"
+                                  placeholder="Department"
+                                />
+                                <Select.Content>
+                                  {employeeDept.map((item) => (
+                                    <Select.Item
+                                      value={item.name}
+                                      key={item._id}
+                                    >
+                                      {item.name}
+                                    </Select.Item>
+                                  ))}
+                                </Select.Content>
+                              </Select.Root>
+                              <Select.Root
+                                size="2"
+                                value={status}
+                                onValueChange={setStatus}
+                              >
+                                <Select.Trigger
+                                  variant="soft"
+                                  placeholder="Status"
+                                />
+                                <Select.Content>
+                                  {employeeStatus.map((item) => (
+                                    <Select.Item
+                                      value={item.name}
+                                      key={item._id}
+                                    >
+                                      {item.name}
+                                    </Select.Item>
+                                  ))}
+                                </Select.Content>
+                              </Select.Root>
+                              <Button
+                                onClick={resetFilter}
                                 variant="soft"
-                                placeholder="Job role"
-                              />
-                              <Select.Content>
-                                {employeeRole.map((item) => (
-                                  <Select.Item value={item.name} key={item._id}>
-                                    {item.name}
-                                  </Select.Item>
-                                ))}
-                              </Select.Content>
-                            </Select.Root>
-                            <Select.Root
-                              size="2"
-                              value={dept}
-                              onValueChange={setDept}
-                            >
-                              <Select.Trigger
-                                variant="soft"
-                                placeholder="Department"
-                              />
-                              <Select.Content>
-                                {employeeDept.map((item) => (
-                                  <Select.Item value={item.name} key={item._id}>
-                                    {item.name}
-                                  </Select.Item>
-                                ))}
-                              </Select.Content>
-                            </Select.Root>
-                            <Select.Root
-                              size="2"
-                              value={status}
-                              onValueChange={setStatus}
-                            >
-                              <Select.Trigger
-                                variant="soft"
-                                placeholder="Status"
-                              />
-                              <Select.Content>
-                                {employeeStatus.map((item) => (
-                                  <Select.Item value={item.name} key={item._id}>
-                                    {item.name}
-                                  </Select.Item>
-                                ))}
-                              </Select.Content>
-                            </Select.Root>
-                            <Button
-                              onClick={resetFilter}
-                              variant="soft"
-                              color="crimson"
-                            >
-                              Reset
-                            </Button>
+                                color="crimson"
+                              >
+                                Reset
+                              </Button>
+                            </div>
                           </div>
                           <div className="mt-4 w-full overflow-x-auto overflow-y-hidden md:overflow-hidden">
                             <TableData

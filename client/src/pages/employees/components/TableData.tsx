@@ -11,7 +11,7 @@ import { useNavigate, useFetcher } from "react-router-dom";
 import { toast } from "sonner";
 
 const columns = [
-  { name: "NAME", uid: "name" },
+  { name: "EMPLOYEE", uid: "employee" },
   { name: "EMAIL", uid: "email" },
   { name: "PHONE", uid: "phone" },
   { name: "DEPT", uid: "dept" },
@@ -75,7 +75,7 @@ export default function TableData({
       const cellValue = user[columnKey as keyof Userinfo];
 
       switch (columnKey) {
-        case "name":
+        case "employee":
           return (
             <div className="flex items-center gap-2">
               <Avatar
@@ -215,19 +215,20 @@ export default function TableData({
     if (!jobTitle && !role && !dept && !status) {
       return employees;
     }
-    return employees.filter((employee: Userinfo) => {
-      return (
-        employee.jobTitle === jobTitle &&
-        employee.role === role &&
-        employee.dept === dept &&
-        employee.status === status
-      );
+    const filtered = employees.filter((employee: Userinfo) => {
+      const matchesJobTitle = jobTitle ? employee.jobTitle === jobTitle : true;
+      const matchesRole = role ? employee.role === role : true;
+      const matchesDept = dept ? employee.dept === dept : true;
+      const matchesStatus = status ? employee.status === status : true;
+
+      return matchesJobTitle && matchesRole && matchesDept && matchesStatus;
     });
+    return filtered;
   }, [dept, employees, jobTitle, role, status]);
 
   return (
     <>
-      <Table.Root layout="auto" variant="surface">
+      <Table.Root layout="auto" variant="surface" size="1">
         <Table.Header>
           <Table.Row>
             {columns.map((item) => (
@@ -239,7 +240,7 @@ export default function TableData({
         </Table.Header>
         <Table.Body>
           {filteredEmployees.map((user: Userinfo) => (
-            <Table.Row key={user._id}>
+            <Table.Row key={user._id} align="center">
               {columns.map((column) => (
                 <Table.Cell key={column.uid}>
                   {renderCell(user, column.uid) as string}

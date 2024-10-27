@@ -20,10 +20,7 @@ import { TextArea } from "@radix-ui/themes";
 import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { useForm } from "react-hook-form";
-import {
-  IoIosCloseCircleOutline,
-  IoMdArrowDropleftCircle,
-} from "react-icons/io";
+import { IoIosCloseCircleOutline } from "react-icons/io";
 import { IoImageOutline } from "react-icons/io5";
 import {
   useFetcher,
@@ -50,8 +47,16 @@ export function Component() {
     user: Userinfo;
     checkAuth: () => void;
   };
-  const { data } = useRouteLoaderData("departments") as {
-    data: DepartmentsData;
+  const {
+    depts: { data },
+  } = useRouteLoaderData("departments-employees") as {
+    depts: {
+      data: {
+        departments: DepartmentsData;
+        getDeptNames: string[];
+        deptCount: { [key: string]: number };
+      };
+    };
   };
   const fetcher = useFetcher();
   const {
@@ -62,7 +67,7 @@ export function Component() {
     setValue,
   } = useForm();
   const isSubmitting = fetcher.state === "submitting";
-  const departments = data;
+  const departments = data.departments;
   const {
     email,
     firstName,
@@ -128,7 +133,7 @@ export function Component() {
       const timeoutId = setTimeout(() => {
         checkAuth();
       }, 1000);
-      navigate(`/employees/${firstName.toLowerCase()}/${employeeId}`);
+      navigate(-1);
       return () => clearTimeout(timeoutId);
     }
   }, [fetcher, checkAuth, navigate, firstName, employeeId]);
@@ -165,14 +170,9 @@ export function Component() {
     <>
       <Helmet>
         <title>{firstName + " " + lastName} profile</title>
-        <meta name="description" content="Edit your profile" />
+        <meta name="description" content="Edit account" />
       </Helmet>
-      <IoMdArrowDropleftCircle
-        className="text-2xl text-sky-300 cursor-pointer"
-        role="button"
-        onClick={() => navigate("/settings")}
-      />
-      <Headings className="my-8" text="Edit your account" header={true} />
+      <Headings className="my-8" text="Edit account" header={true} />
       <div className="py-4 px-2">
         {navigation.state === "loading" ? (
           <DataSpinner />

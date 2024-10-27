@@ -9,26 +9,19 @@ const deptSchema = new Schema(
       type: String,
       required: true,
     },
-   hod: {
-    type: String,
-   }
+    supervisor: {
+      type: String,
+      required: true,
+    },
+    supervisorEmployeeId: {
+      type: String,
+      required: true,
+    },
   },
   {
     timestamps: true,
   }
 );
-
-// deptSchema.pre("save", function (next) {
-//   if (this.isNew && this.dept.length === 0) {
-//     this.dept = [
-//       { name: "human resources" },
-//       { name: "facility" },
-//       { name: "marketing" },
-//       { name: "products" },
-//     ];
-//   }
-//   next();
-// });
 
 const Dept = mongoose.models.Dept || model("Dept", deptSchema);
 

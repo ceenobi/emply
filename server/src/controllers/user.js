@@ -1,3 +1,4 @@
+import createHttpError from "http-errors";
 import Event from "../models/event.js";
 import User from "../models/user.js";
 import Leave from "../models/leave.js";
@@ -11,7 +12,7 @@ import {
   validateLastName,
 } from "../utils/validateForm.js";
 
-export const getAUser = tryCatch(async (req, res, next) => {
+export const getAEmployee = tryCatch(async (req, res, next) => {
   const { firstName, employeeId } = req.params;
   if (!firstName || !employeeId) {
     return next(createHttpError(401, "Field params are missing or incomplete"));
@@ -25,7 +26,7 @@ export const getAUser = tryCatch(async (req, res, next) => {
   res.status(200).json({ user, events: getUserEvents, leaves: getUserLeaves });
 });
 
-export const getAllUsers = tryCatch(async (req, res, next) => {
+export const getAllEmployees = tryCatch(async (req, res, next) => {
   const page = parseInt(req.query.page) || 1;
   const limit = parseInt(req.query.limit) || 10;
   const skipCount = (page - 1) * limit;
@@ -47,7 +48,7 @@ export const getAllUsers = tryCatch(async (req, res, next) => {
   res.status(200).json(users);
 });
 
-export const updateUserProfile = tryCatch(async (req, res, next) => {
+export const updateEmployeeProfile = tryCatch(async (req, res, next) => {
   const { employeeId } = req.params;
   const {
     email,
@@ -61,10 +62,11 @@ export const updateUserProfile = tryCatch(async (req, res, next) => {
     state,
     status,
     country,
-    gender, 
-    dateOfBirth, 
+    gender,
+    dateOfBirth,
     jobType,
-    maritalStatus
+    dept, 
+    maritalStatus,
   } = req.body;
   if (!employeeId) {
     return next(createHttpError(401, "EmployeeId is missing"));
@@ -113,10 +115,11 @@ export const updateUserProfile = tryCatch(async (req, res, next) => {
     state,
     country,
     status,
-    gender, 
-    dateOfBirth, 
+    gender,
+    dateOfBirth,
     jobType,
-    maritalStatus
+    dept, 
+    maritalStatus,
   };
   const updatedProfile = await updateProfile(employeeId, user);
   res.status(200).json({ updatedProfile, msg: "User profile updated" });
@@ -149,4 +152,38 @@ export const searchEmployee = tryCatch(async (req, res, next) => {
     employees,
   };
   res.status(200).json(data);
+});
+
+export const getEmployeesByDept = tryCatch(async (req, res, next) => {
+  const { dept } = req.params;
+  if (!dept) {
+    return next(createHttpError(400, "Department name is required"));
+  }
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 10;
+  const skipCount = (page - 1) * limit;
+  const count = await User.countDocuments({ dept });
+  const totalPages = Math.ceil(count / limit);
+  const department = await User.find({ dept })
+    .sort({ _id: -1 })
+    .skip(skipCount)
+    .limit(limit);
+  if (!department) {
+    return next(createHttpError(404, "No employees found in this department"));
+  }
+  const employees = {
+    currentPage: page,
+    totalPages,
+    count,
+    department,
+  };
+  res.status(200).json(employees);
+});
+
+export const getEmployees = tryCatch(async (req, res, next) => {
+  const employees = await User.find();
+  if (!employees) {
+    return next(createHttpError(404, "No employees found"));
+  }
+  res.status(200).json(employees);
 });

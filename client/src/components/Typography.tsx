@@ -31,7 +31,7 @@ export const Headings = ({
           }}
         >
           <motion.h1
-            className={`font-semibold text-4xl tracking-[-0.02em] drop-shadow-sm ${className}`}
+            className={`font-semibold text-3xl tracking-[-0.02em] drop-shadow-sm ${className}`}
             variants={FADE_DOWN_ANIMATION_VARIANTS}
           >
             {text}

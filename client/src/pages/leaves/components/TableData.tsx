@@ -127,7 +127,7 @@ export default function TableData({ leaves, selectQuery }: EmployeeLeaveProps) {
 
   return (
     <>
-      <Table.Root layout="auto" variant="surface">
+      <Table.Root layout="auto" variant="surface" size="1">
         <Table.Header>
           <Table.Row>
             {columns.map((item) => (

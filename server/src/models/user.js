@@ -44,7 +44,8 @@ const userSchema = new Schema(
     },
     dept: {
       type: String,
-      enum: ["human resources", "operations", "marketing", "products"],
+      required: true,
+      //enum: ["human resources", "operations", "marketing", "products"],
     },
     jobType: {
       type: String,

@@ -25,6 +25,7 @@ import { generateTokenAndSetCookie } from "../utils/generateToken.js";
 import Event from "../models/event.js";
 import Leave from "../models/leave.js";
 import { isValidObjectId } from "mongoose";
+import Dept from "../models/dept.js";
 
 export const register = tryCatch(async (req, res, next) => {
   const {
@@ -37,7 +38,7 @@ export const register = tryCatch(async (req, res, next) => {
     role,
     gender,
     dateOfBirth,
-    jobType
+    jobType,
   } = req.body;
   if (
     !email ||
@@ -99,6 +100,10 @@ export const register = tryCatch(async (req, res, next) => {
   if (phoneExists) {
     return next(createHttpError(400, "Phone number already exists"));
   }
+  const getDept = await Dept.findOne({ name: dept });
+  if (!getDept) {
+    return next(createHttpError(400, "Invalid department"));
+  }
   const registerUser = {
     email,
     password,
@@ -109,7 +114,7 @@ export const register = tryCatch(async (req, res, next) => {
     role,
     gender,
     dateOfBirth,
-    jobType
+    jobType,
   };
   await createUser(registerUser);
   res.status(201).json({

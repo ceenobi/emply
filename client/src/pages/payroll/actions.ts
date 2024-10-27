@@ -26,7 +26,6 @@ export const updatePayrollAction = async ({
 }) => {
   const formData = await request.formData();
   const payroll = Object.fromEntries(formData);
-  console.log(payroll);
   try {
     const res = await payrollService.updateAPayroll(
       payroll.firstName as string,
