@@ -1,5 +1,4 @@
-import { authService, employeeService } from "@/api";
-import { UpdateProfileProps } from "@/types/user";
+import { authService } from "@/api";
 import { handleError } from "@/utils";
 
 export const changePasswordAction = async ({
@@ -16,25 +15,6 @@ export const changePasswordAction = async ({
     const res = await authService.changePassword({ user });
     return res;
   } catch (error: unknown) {
-    handleError(error);
-  }
-  return null;
-};
-
-export const updateProfileAction = async ({
-  request,
-}: {
-  request: Request;
-}) => {
-  const formData = await request.formData();
-  const updateBody = Object.fromEntries(formData);
-  try {
-    const res = await employeeService.updateEmployeeProfile(
-      updateBody.employeeId as string,
-      updateBody as unknown as UpdateProfileProps
-    );
-    return res;
-  } catch (error) {
     handleError(error);
   }
   return null;

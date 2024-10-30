@@ -139,7 +139,7 @@ export default function TableData({
                   <Tooltip content="Edit profile">
                     <div>
                       <RouterLink
-                        to={`/settings/profile/${user.firstName.toLowerCase()}/${user.employeeId}`}
+                        to={`/employees/edit/${user.firstName.toLowerCase()}/${user.employeeId}`}
                         className="text-lg text-teal-300 cursor-pointer active:opacity-50"
                         text={<FaEdit />}
                       />

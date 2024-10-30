@@ -58,6 +58,8 @@ export default function Nav() {
     }
   }, 400);
 
+  const paths = ["/settings", "/departments"]
+
   const handleToggle = () => {
     setIsOpenSideBar(!isOpenSideBar);
     setHideSideBar(false);
@@ -82,7 +84,7 @@ export default function Nav() {
             setInputValue(e.target.value);
             handleSearch(e);
           }}
-          disabled={location.pathname.startsWith("/settings")}
+          disabled={paths.some(path => location.pathname.startsWith(path))}
         >
           <TextField.Slot>
             <FiSearch height="16" width="16" />

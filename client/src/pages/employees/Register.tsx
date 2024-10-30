@@ -5,14 +5,21 @@ import { employeeRole, inputFields } from "@/utils";
 import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { useForm } from "react-hook-form";
-import { IoMdArrowDropleftCircle } from "react-icons/io";
 import { useFetcher, useNavigate, useRouteLoaderData } from "react-router-dom";
 import { toast } from "sonner";
 
 export default function Register() {
   const [isVisible, setIsVisible] = useState(false);
-  const { data } = useRouteLoaderData("departments") as {
-    data: { departments: DepartmentsData };
+  const {
+    depts: { data },
+  } = useRouteLoaderData("departments-employees") as {
+    depts: {
+      data: {
+        departments: DepartmentsData[];
+        getDeptNames: string[];
+        deptCount: { [key: string]: number };
+      };
+    };
   };
 
   const navigate = useNavigate();
@@ -60,11 +67,6 @@ export default function Register() {
           content="Add a new worker to your organization."
         />
       </Helmet>
-      <IoMdArrowDropleftCircle
-        className="text-2xl text-sky-300 cursor-pointer"
-        role="button"
-        onClick={() => navigate("/employees")}
-      />
       <Headings className="my-8" text="Add a new employee" header={true} />
       <div className="py-4 px-2">
         <fetcher.Form

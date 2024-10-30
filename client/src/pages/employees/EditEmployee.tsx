@@ -5,7 +5,6 @@ import {
   FormSelect,
   Headings,
 } from "@/components";
-import { useAuthProvider } from "@/store";
 import { DepartmentsData } from "@/types/dept";
 import { Userinfo } from "@/types/user";
 import {
@@ -13,45 +12,35 @@ import {
   inputFields,
   jobType as JobType,
   selectJobTitle,
-  maritalStatus as MaritalStatus,
   formatEditDate,
 } from "@/utils";
-import { TextArea } from "@radix-ui/themes";
 import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { useForm } from "react-hook-form";
-import { IoIosCloseCircleOutline } from "react-icons/io";
-import { IoImageOutline } from "react-icons/io5";
 import {
   useFetcher,
+  useLoaderData,
   useNavigate,
   useNavigation,
   useRouteLoaderData,
 } from "react-router-dom";
 import { toast } from "sonner";
-
-export function Component() {
+export default function Component() {
   const [isVisible, setIsVisible] = useState(false);
-  const [selectedImage, setSelectedImage] = useState<string | undefined>(
-    undefined
-  );
-  const navigate = useNavigate();
-  const navigation = useNavigation();
-  const { user, checkAuth } = useAuthProvider() as {
-    user: Userinfo;
-    checkAuth: () => void;
-  };
+  const {
+    data: { user: userProfile },
+  } = useLoaderData() as { data: { user: Userinfo } };
   const {
     depts: { data },
   } = useRouteLoaderData("departments-employees") as {
     depts: {
       data: {
         departments: DepartmentsData;
-        getDeptNames: string[];
-        deptCount: { [key: string]: number };
       };
     };
   };
+  const navigate = useNavigate();
+  const navigation = useNavigation();
   const fetcher = useFetcher();
   const {
     register,
@@ -61,7 +50,6 @@ export function Component() {
     setValue,
   } = useForm();
   const isSubmitting = fetcher.state === "submitting";
-  const departments = data.departments;
   const {
     email,
     firstName,
@@ -78,10 +66,11 @@ export function Component() {
     maritalStatus,
     dateOfBirth,
     employeeId,
-  } = user || {};
+  } = userProfile || {};
+  const departments = data.departments;
 
   useEffect(() => {
-    if (user) {
+    if (userProfile) {
       setValue("email", email);
       setValue("firstName", firstName);
       setValue("lastName", lastName);
@@ -113,11 +102,11 @@ export function Component() {
     photo,
     status,
     setValue,
+    userProfile,
     jobType,
     gender,
     maritalStatus,
     dateOfBirth,
-    user,
   ]);
 
   useEffect(() => {
@@ -125,38 +114,22 @@ export function Component() {
       toast.success(fetcher.data.data.msg as string, {
         id: "update-profile-success",
       });
-      const timeoutId = setTimeout(() => {
-        checkAuth();
-      }, 1000);
       navigate(-1);
-      return () => clearTimeout(timeoutId);
     }
-  }, [fetcher, checkAuth, navigate]);
+  }, [fetcher, navigate]);
 
-  const handleImage = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file && file.size > 2 * 1000 * 1000) {
-      toast.error("File with maximum size of 2MB is allowed");
-      return false;
-    }
-    const reader = new FileReader();
-    if (file) {
-      reader.readAsDataURL(file);
-      reader.onloadend = () => {
-        setSelectedImage(reader.result as string);
-      };
-    }
-  };
-
-  const formFields1 = ["email", "firstName", "lastName", "dateOfBirth"];
-  const formFields2 = ["phone", "homeAddress", "state", "country"];
+  const formFields1 = ["firstName", "lastName", "email", "dateOfBirth"];
+  const formFields2 = ["phone"];
 
   const onFormSubmit = async (data: object) => {
     fetcher.submit(
-      { ...data, photo: selectedImage || "", employeeId: employeeId as string },
+      {
+        ...data,
+        employeeId: employeeId as string,
+      },
       {
         method: "patch",
-        action: "/settings/profile",
+        action: `/employees/edit/${firstName}/${employeeId}`,
       }
     );
   };
@@ -164,17 +137,21 @@ export function Component() {
   return (
     <>
       <Helmet>
-        <title>{firstName + " " + lastName} profile</title>
+        <title>{firstName + "'s"} profile</title>
         <meta name="description" content="Edit account" />
       </Helmet>
-      <Headings className="my-8" text="Edit account" header={true} />
+      <Headings
+        className="my-8"
+        text={`Edit ${firstName}'s account`}
+        header={true}
+      />
       <div className="py-4 px-2">
         {navigation.state === "loading" ? (
           <DataSpinner />
         ) : (
           <fetcher.Form
             method="patch"
-            action="/settings/profile"
+            action={`/employees/edit/${firstName}/${employeeId}`}
             onSubmit={handleSubmit(onFormSubmit)}
           >
             <div className="grid md:grid-cols-3 gap-8">
@@ -206,10 +183,11 @@ export function Component() {
                         isVisible={isVisible}
                         setIsVisible={setIsVisible}
                         isRequired={isRequired}
-                        disabled={!["admin", "super-admin"].includes(user.role)}
                       />
                     )
                   )}
+              </div>
+              <div>
                 <FormSelect
                   label="Department"
                   name="dept"
@@ -220,7 +198,6 @@ export function Component() {
                   data={departments}
                   defaultValue={dept}
                   control={control}
-                  disabled={!["admin", "super-admin"].includes(user.role)}
                   isRequired
                 />
                 <FormSelect
@@ -234,10 +211,7 @@ export function Component() {
                   defaultValue={jobTitle}
                   control={control}
                   isRequired
-                  disabled={!["admin", "super-admin"].includes(user.role)}
                 />
-              </div>
-              <div>
                 <FormSelect
                   label="Job Type"
                   name="jobType"
@@ -249,7 +223,6 @@ export function Component() {
                   defaultValue={jobType}
                   control={control}
                   isRequired
-                  disabled={!["admin", "super-admin"].includes(user.role)}
                 />
                 <FormSelect
                   label="Status"
@@ -263,7 +236,8 @@ export function Component() {
                   control={control}
                   isRequired
                 />
-
+              </div>
+              <div>
                 {inputFields
                   .filter((item) => formFields2.includes(item.name))
                   .map(
@@ -289,90 +263,10 @@ export function Component() {
                         Icon={Icon}
                         validate={(value) => validate(value) || undefined}
                         isRequired={isRequired}
+                        disabled
                       />
                     )
                   )}
-              </div>
-              <div>
-                <FormSelect
-                  label="Marital Status"
-                  name="maritalStatus"
-                  id="maritalStatus"
-                  register={register}
-                  errors={errors}
-                  placeholder="None selected"
-                  data={MaritalStatus}
-                  defaultValue={maritalStatus}
-                  control={control}
-                  isRequired={false}
-                />
-                <fieldset className="mb-4">
-                  <label className="mb-4">Bio</label>
-                  <TextArea
-                    placeholder="tell us about yourself"
-                    size="3"
-                    mt="3"
-                    defaultValue={bio}
-                    {...register("bio")}
-                    disabled={employeeId !== user.employeeId}
-                  />
-                </fieldset>
-                {employeeId === user.employeeId && (
-                  <div className="flex flex-col justify-center mb-8">
-                    <label className="mb-4">Profile Photo</label>
-                    <div className="rounded-lg px-4 py-5 w-full cursor-pointer bg-sky-100 hover:transition duration-150 ease-out">
-                      {selectedImage ? (
-                        <div className="flex justify-center relative">
-                          <img
-                            alt="Event image peview"
-                            src={selectedImage}
-                            className="text-center w-[100px] h-[100px]"
-                          />
-                          <IoIosCloseCircleOutline
-                            className="absolute top-0 right-4 text-sky-300 cursor-pointer hover:text-red-400"
-                            size="24px"
-                            title="delete image"
-                            onClick={() => setSelectedImage(undefined)}
-                          />
-                        </div>
-                      ) : (
-                        <div className="relative">
-                          <div className="flex flex-col items-center justify-center w-full bg-sky-100 h-[100px]">
-                            <IoImageOutline size="30px" />
-                            <Headings
-                              className="text-md cursor-pointer"
-                              text={
-                                selectedImage ? "Change image" : "Upload image"
-                              }
-                              header={false}
-                            />
-                          </div>
-                          <div className="w-full absolute inset-0 h-[100px] opacity-0">
-                            <label
-                              htmlFor="photo"
-                              className="mb-5 text-xs font-semibold"
-                            >
-                              Upload image
-                            </label>
-                            <input
-                              type="file"
-                              className="w-full h-[100px]"
-                              accept="image/*"
-                              {...register("photo")}
-                              onChange={handleImage}
-                              disabled={["admin", "super-admin"].includes(
-                                user.role
-                              )}
-                            />
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                    <span className="text-sm">
-                      File with maximum size of 2MB is allowed
-                    </span>
-                  </div>
-                )}
               </div>
             </div>
             <div className="mt-8 text-end">
@@ -398,4 +292,4 @@ export function Component() {
   );
 }
 
-Component.displayName = "EditProfile";
+Component.displayName = "EditEmployee";

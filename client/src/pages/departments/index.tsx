@@ -51,7 +51,7 @@ export function Component() {
           <>
             <div className="flex justify-between items-center">
               <Headings text="Departments" header={true} />
-              {roles.includes(user.role) && (
+              {roles.includes(user?.role) && (
                 <RouterLink
                   to="/departments/create"
                   className="text-sm font-semibold text-sky-100"

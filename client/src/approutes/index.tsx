@@ -26,10 +26,12 @@ import * as settingsAction from "@/pages/settings/actions";
 import * as payrollAction from "@/pages/payroll/actions";
 import { useAuthProvider } from "@/store";
 import { Userinfo } from "@/types/user";
+import { ErrorBoundary } from "@/components";
 
 const AuthLayout = lazy(() => import("@/components/layouts/auth"));
 const RootLayout = lazy(() => import("@/components/layouts/root"));
 const RegisterEmployee = lazy(() => import("@/pages/employees/Register"));
+const EditEmployee = lazy(() => import("@/pages/employees/EditEmployee"));
 const AllLeavesPage = lazy(() => import("@/pages/leaves/AllLeaves"));
 const VerifyAccount = lazy(() => import("@/pages/auth/VerifyAccount"));
 const Payroll = lazy(() => import("@/pages/payroll"));
@@ -45,6 +47,7 @@ export default function AppRoutes() {
     {
       path: "/",
       id: "departments-employees",
+      errorElement: <ErrorBoundary />,
       element: (
         <PrivateRoutes>
           <Suspense fallback={<LazySpinner />}>
@@ -91,6 +94,22 @@ export default function AppRoutes() {
                 );
                 return defer({ data });
               },
+            },
+            {
+              path: "edit/:firstName/:employeeId",
+              element: (
+                <AdminRoutes>
+                  <EditEmployee />
+                </AdminRoutes>
+              ),
+              loader: ({ params }) => {
+                const data = employeeData.getAnEmployee(
+                  params.firstName as string,
+                  params.employeeId as string
+                );
+                return data;
+              },
+              action: employeeAction.updateProfileAction,
             },
             {
               path: "search",
@@ -201,16 +220,9 @@ export default function AppRoutes() {
               lazy: () => import("@/pages/settings/DeleteAccount"),
             },
             {
-              path: "profile/:firstName/:employeeId",
+              path: "profile",
               lazy: () => import("@/pages/settings/Profile"),
-              action: settingsAction.updateProfileAction,
-              loader: ({ params }) => {
-                const data = employeeData.getAnEmployee(
-                  params.firstName as string,
-                  params.employeeId as string
-                );
-                return data;
-              },
+              action: employeeAction.updateProfileAction,
             },
             {
               path: "payroll-history",

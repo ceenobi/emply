@@ -7,6 +7,7 @@ import Page from "./Page";
 import { AlertBox, InfoBox } from "./ModalBox";
 import { LazySpinner, DataSpinner } from "./Spinner";
 import PayrollCard from "./PayrollCard";
+import ErrorBoundary from "./ErrorBoundary";
 
 export {
   Headings,
@@ -22,4 +23,5 @@ export {
   LazySpinner,
   DataSpinner,
   PayrollCard,
+  ErrorBoundary
 };

@@ -34,7 +34,6 @@ export function Component() {
     isVerified,
     createdAt,
     status,
-    employeeId,
   } = user;
   const match = useMatch("/settings");
 
@@ -227,7 +226,7 @@ export function Component() {
                   variant="surface"
                 >
                   <RouterLink
-                    to={`/settings/profile/${firstName?.toLowerCase()}/${employeeId}`}
+                    to="/settings/profile"
                     className="flex flex-col items-center p-1"
                     text={
                       <div className="text-sky-300 flex flex-col items-center font-semibold text-center">

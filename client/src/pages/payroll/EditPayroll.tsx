@@ -10,7 +10,6 @@ import { TextArea } from "@radix-ui/themes";
 import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { useForm } from "react-hook-form";
-import { IoMdArrowDropleftCircle } from "react-icons/io";
 import {
   useNavigate,
   useLoaderData,
@@ -92,11 +91,6 @@ export function Component() {
         <title>Edit an employee to the payroll</title>
         <meta name="description" content="Edit a worker salary payroll." />
       </Helmet>
-      <IoMdArrowDropleftCircle
-        className="text-2xl text-sky-300 cursor-pointer"
-        role="button"
-        onClick={() => navigate("/payroll")}
-      />
       <Headings className="my-8" text="Update payroll" header={true} />
       {navigation.state === "loading" ? (
         <DataSpinner />
