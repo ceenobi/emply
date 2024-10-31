@@ -5,16 +5,13 @@ import { Helmet } from "react-helmet-async";
 import {
   Await,
   useLoaderData,
-  useNavigate,
   useSearchParams,
 } from "react-router-dom";
 import { DataSpinner } from "@/components/Spinner";
 import TableData from "./components/TableData";
-import { IoMdArrowDropleftCircle } from "react-icons/io";
 
 export function Component() {
   const { data } = useLoaderData() as { data: Userinfo };
-  const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const query = (searchParams.get("query") as string) || "";
 
@@ -24,11 +21,6 @@ export function Component() {
         <title>Search results for &quot;{query}&quot;</title>
         <meta name="description" content="View employee search query" />
       </Helmet>
-      <IoMdArrowDropleftCircle
-        className="text-2xl text-sky-300 cursor-pointer"
-        role="button"
-        onClick={() => navigate("/employees")}
-      />
       <div className="mt-6 flex justify-between items-center">
         <Headings text={`Search results for: "${query}"`} header={true} />
       </div>

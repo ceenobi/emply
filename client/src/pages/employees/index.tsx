@@ -49,7 +49,7 @@ export function Component() {
                   to="/employees/register"
                   className="text-sm font-semibold text-sky-100"
                   text={
-                    <button className="flex justify-center items-center gap-2 w-[140px] h-[36px] bg-sky-300 rounded-md">
+                    <button className="flex justify-center items-center gap-2 w-[140px] md:h-[36px] bg-sky-300 rounded-md">
                       <AiOutlinePlusCircle />
                       Add
                     </button>

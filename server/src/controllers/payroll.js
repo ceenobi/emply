@@ -69,7 +69,7 @@ export const getAllPayrolls = tryCatch(async (req, res, next) => {
   const payrolls = await Payroll.find()
     .populate("userId", "photo firstName lastName")
     .lean()
-    .sort({ _id: -1 })
+    .sort({ payollDate: -1 })
     .skip(skipCount)
     .limit(limit);
   if (!payrolls) {

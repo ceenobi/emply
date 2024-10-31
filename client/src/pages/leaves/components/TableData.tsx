@@ -139,7 +139,7 @@ export default function TableData({ leaves, selectQuery }: EmployeeLeaveProps) {
         </Table.Header>
         <Table.Body>
           {filteredLeaves.map((leave: LeaveProps) => (
-            <Table.Row key={leave._id}>
+            <Table.Row key={leave._id} align="center">
               {columns.map((column) => (
                 <Table.Cell key={column.uid}>
                   {renderCell(leave, column.uid) as string}

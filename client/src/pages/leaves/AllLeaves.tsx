@@ -2,15 +2,13 @@ import { DataSpinner, Headings, Paginate, Texts } from "@/components";
 import { LeaveProps } from "@/types/leave";
 import { Suspense, useState } from "react";
 import { Helmet } from "react-helmet-async";
-import { IoMdArrowDropleftCircle } from "react-icons/io";
-import { Await, useLoaderData, useNavigate } from "react-router-dom";
+import { Await, useLoaderData } from "react-router-dom";
 import TableData from "./components/TableData";
 import { Badge } from "@radix-ui/themes";
 import { leaveStatusColorMap } from "@/utils";
 
 export default function AllLeaves() {
   const [selectQuery, setSelectQuery] = useState<string | undefined>("all");
-  const navigate = useNavigate();
   const { data } = useLoaderData() as { data: LeaveProps };
 
   const handleFilterQuery = (query: string) => {
@@ -23,11 +21,6 @@ export default function AllLeaves() {
         <title>All Employees Leaves - approve or cancel leave requests.</title>
         <meta name="description" content="View all employees leaves applied" />
       </Helmet>
-      <IoMdArrowDropleftCircle
-        className="text-2xl text-sky-300 cursor-pointer"
-        role="button"
-        onClick={() => navigate(-1)}
-      />
       <Headings text="All leaves" header={true} className="my-8" />
       <div className="mt-6">
         <Suspense fallback={<DataSpinner />}>

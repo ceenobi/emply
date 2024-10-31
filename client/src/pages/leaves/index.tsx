@@ -37,12 +37,12 @@ export function Component() {
               <Headings text="Leaves" header={true} className="mb-4" />
               <RouterLink
                 to="/leaves/apply"
-                className="md:hidden text-md font-semibold text-white hover:text-cream-100 bg-sky-300 p-2 rounded-3xl"
+                className="text-md font-semibold text-sky-100 bg-sky-300 p-2 rounded-lg"
                 text={
-                  <div className="flex justify-center items-center gap-2 w-[150px] ">
+                  <button className="flex justify-center items-center gap-2 w-[140px] md:h-[36px] bg-sky-300 rounded-md">
                     <AiOutlinePlusCircle />
                     Apply
-                  </div>
+                  </button>
                 }
               />
             </div>

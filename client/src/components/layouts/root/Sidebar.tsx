@@ -143,7 +143,7 @@ export default function Sidebar() {
             className="flex gap-2 text-sky-300 hover:text-red-400 hover:transition duration-150 ease-out cursor-pointer w-full mb-4"
             onClick={handleLogout}
           >
-            <MdLogout size="1.5em" role="button" />
+            <MdLogout size="1.5rem" role="button" />
             <span
               className={`font-semibold text-lg ${isOpenSideBar ? "hidden lg:block" : "hidden"}`}
             >

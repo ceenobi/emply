@@ -1,9 +1,4 @@
-import {
-  ActionButton,
-  DataSpinner,
-  FormInput,
-  Headings,
-} from "@/components";
+import { ActionButton, DataSpinner, FormInput, Headings } from "@/components";
 import { PayrollProps } from "@/types/payroll";
 import { formatEditDate, inputFields } from "@/utils";
 import { TextArea } from "@radix-ui/themes";

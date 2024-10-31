@@ -6,7 +6,6 @@ import { Helmet } from "react-helmet-async";
 import { Controller, useForm } from "react-hook-form";
 import {
   IoIosCloseCircleOutline,
-  IoMdArrowDropleftCircle,
 } from "react-icons/io";
 import { IoImageOutline } from "react-icons/io5";
 import { useNavigate, useFetcher } from "react-router-dom";
@@ -71,11 +70,6 @@ export function Component() {
         />
       </Helmet>
       <>
-        <IoMdArrowDropleftCircle
-          className="text-2xl text-sky-300 cursor-pointer"
-          role="button"
-          onClick={() => navigate(-1)}
-        />
         <Headings text="Apply for leave" header={true} className="my-8" />
         <div className="py-4 px-2">
           <fetcher.Form
