@@ -37,7 +37,7 @@ export function Component() {
               <Headings text="Leaves" header={true} className="mb-4" />
               <RouterLink
                 to="/leaves/apply"
-                className="text-md font-semibold text-sky-100 bg-sky-300 p-2 rounded-lg"
+                className="text-md font-semibold text-sky-100"
                 text={
                   <button className="flex justify-center items-center gap-2 w-[140px] md:h-[36px] bg-sky-300 rounded-md">
                     <AiOutlinePlusCircle />
@@ -72,16 +72,7 @@ export function Component() {
                   />
                 )}
               </div>
-              <RouterLink
-                to="/leaves/apply"
-                className="hidden md:block text-md font-semibold text-sky-100 bg-sky-300 p-2 rounded-lg"
-                text={
-                  <div className="flex justify-center items-center gap-2 w-[150px] ">
-                    <AiOutlinePlusCircle />
-                    Apply
-                  </div>
-                }
-              />
+             
             </div>
 
             <div className="mt-6">

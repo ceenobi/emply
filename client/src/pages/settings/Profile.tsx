@@ -46,7 +46,7 @@ export function Component() {
   } = useRouteLoaderData("departments-employees") as {
     depts: {
       data: {
-        departments: DepartmentsData;
+        departments: DepartmentsData[];
         getDeptNames: string[];
         deptCount: { [key: string]: number };
       };
@@ -385,7 +385,7 @@ export function Component() {
                   color: "white",
                   cursor: "pointer",
                 }}
-                size="3"
+                size="2"
                 variant="soft"
                 loading={isSubmitting}
                 disabled={isSubmitting}

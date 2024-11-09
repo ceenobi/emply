@@ -1,17 +1,11 @@
 import mongoose, { Schema, model } from "mongoose";
 
-const eventSchema = new Schema(
+const taskSchema = new Schema(
   {
     userId: {
       type: Schema.Types.ObjectId,
       ref: "User",
       required: true,
-    },
-    photo: {
-      type: String,
-    },
-    location: {
-      type: String,
     },
     title: {
       type: String,
@@ -31,29 +25,28 @@ const eventSchema = new Schema(
     },
     status: {
       type: String,
-      enum: ["ongoing", "ended", "cancelled", "postponed", "upcoming"],
-      index: "text",
+      enum: ["planned", "completed", "inprogress", "postponed"],
+      required: true,
     },
-    time: {
+    priority: {
       type: String,
-      validate: {
-        validator: function (v) {
-          return /^([01]\d|2[0-3]):([0-5]\d)$/.test(v); // HH:mm format
-        },
-        message: (props) => `${props.value} is not a valid time format!`,
-      },
+      enum: ["low", "medium", "high"],
+      required: true,
     },
-    members:  {
-        type: [Schema.Types.ObjectId],
-        ref: "User",
-        default: [],
-      },
+    tags: {
+      type: [String],
+      default: [],
+    },
+    members: {
+      type: [String],
+      default: [],
+    },
   },
   {
     timestamps: true,
   }
 );
 
-const Event = mongoose.models.Event || model("Event", eventSchema);
+const Task = mongoose.models.Task || model("Task", taskSchema);
 
-export default Event;
+export default Task;

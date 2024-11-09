@@ -53,9 +53,9 @@ export default function Payroll() {
               <Headings text="Payroll" header={true} />
               <RouterLink
                 to="/payroll/create"
-                className="text-md font-semibold text-sky-100 bg-sky-300 p-2 rounded-lg"
+                className="text-md font-semibold text-sky-100"
                 text={
-                  <button className="flex justify-center items-center gap-2 w-[140px] h-[36px] bg-sky-300 rounded-md">
+                  <button className="flex justify-center items-center gap-2 w-[140px] md:h-[36px] bg-sky-300 rounded-md">
                     <AiOutlinePlusCircle />
                     Create
                   </button>
@@ -84,7 +84,7 @@ export default function Payroll() {
                                 resolvedData.data.totalDeductions
                               }
                             />
-                            <div className="mt-8 flex justify-between items-center">
+                            <div className="mt-8 flex flex-wrap  gap-4 justify-between items-center">
                               <div className="flex flex-wrap gap-3 items-center">
                                 {Object.keys(payrollStatusColorMap).map(
                                   (status) => (
@@ -138,7 +138,7 @@ export default function Payroll() {
                                 </Select.Root>
                               </div>
                             </div>
-                            <div className="mt-4 w-full overflow-x-auto overflow-y-hidden md:overflow-hidden">
+                            <div className="mt-4 overflow-x-auto overflow-y-hidden md:overflow-hidden">
                               <TableData
                                 payroll={resolvedData.data.payroll}
                                 selectQuery={selectQuery}

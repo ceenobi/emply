@@ -24,6 +24,7 @@ import * as leaveAction from "@/pages/leaves/actions";
 import * as eventAction from "@/pages/events/actions";
 import * as settingsAction from "@/pages/settings/actions";
 import * as payrollAction from "@/pages/payroll/actions";
+import * as taskAction from "@/pages/tasks/actions";
 import { useAuthProvider } from "@/store";
 import { Userinfo } from "@/types/user";
 import { ErrorBoundary } from "@/components";
@@ -332,6 +333,17 @@ export default function AppRoutes() {
                 return data;
               },
               action: departmentAction.updateDepartmentAction,
+            },
+          ],
+        },
+        {
+          path: "tasks",
+          lazy: () => import("@/pages/tasks"),
+          children: [
+            {
+              path: "create",
+              lazy: () => import("@/pages/tasks/Create"),
+              action: taskAction.createTaskAction,
             },
           ],
         },

@@ -179,7 +179,7 @@ export default function Register() {
                 color: "white",
                 cursor: "pointer",
               }}
-              size="3"
+              size="2"
               variant="soft"
               loading={isSubmitting}
               disabled={isSubmitting}

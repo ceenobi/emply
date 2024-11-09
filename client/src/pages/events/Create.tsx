@@ -5,7 +5,6 @@ import { Helmet } from "react-helmet-async";
 import { Controller, useForm } from "react-hook-form";
 import {
   IoIosCloseCircleOutline,
-  IoMdArrowDropleftCircle,
 } from "react-icons/io";
 import { IoImageOutline } from "react-icons/io5";
 import { useFetcher, useNavigate } from "react-router-dom";
@@ -68,11 +67,6 @@ export function Component() {
           content="Create your event, set date, time and location."
         />
       </Helmet>
-      <IoMdArrowDropleftCircle
-        className="text-2xl text-sky-300 cursor-pointer"
-        role="button"
-        onClick={() => navigate("/events")}
-      />
       <Headings className="my-8" text="Create Event" header={true} />
       <div className="py-4 px-2">
         <fetcher.Form
@@ -114,7 +108,7 @@ export function Component() {
             <div>
               <div>
                 <label htmlFor="description" className="text-md">
-                  Description
+                  Description<span className="text-red-400 mx-1">*</span>
                 </label>
                 <Suspense fallback={<div>Loading editor...</div>}>
                   <Controller

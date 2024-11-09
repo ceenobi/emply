@@ -9,7 +9,6 @@ import {
   UseFormRegister,
 } from "react-hook-form";
 import { IconType } from "react-icons";
-import { DepartmentsData } from "@/types/dept";
 import React, { forwardRef } from "react";
 
 interface FormInputProps {
@@ -35,7 +34,7 @@ interface FormSelectProps {
   label?: string;
   defaultValue?: string;
   placeholder: string;
-  data: Array<{ _id: string; name: string }> | DepartmentsData;
+  data: Array<{ _id: string; name: string }>;
   register: UseFormRegister<any>;
   setValue?: (name: string, value: string) => void;
   errors: FieldErrors;
@@ -60,6 +59,7 @@ export const FormInput = ({
   defaultValue,
   isRequired,
   disabled,
+  ...rest
 }: FormInputProps) => {
   const toggleVisibility = (
     event:
@@ -77,12 +77,12 @@ export const FormInput = ({
   };
 
   return (
-    <fieldset className="mb-4 flex flex-col gap-2">
-      <label htmlFor={id}>
-        {label} {isRequired && <span className="text-sm text-red-600">*</span>}
+    <fieldset className="mb-4 flex flex-col gap-2" {...rest}>
+      <label htmlFor={id} className="text-sm font-semibold">
+        {label} {isRequired && <span className="text-red-600">*</span>}
       </label>
       <TextField.Root
-        size="3"
+        size="2"
         type={isVisible ? "text" : type}
         id={id}
         {...register(name, { validate })}
@@ -135,9 +135,9 @@ export const FormSelect = forwardRef<HTMLSelectElement, FormSelectProps>(
   ) => {
     return (
       <fieldset className="mb-4 flex flex-col gap-2">
-        <label htmlFor={id}>
+        <label htmlFor={id} className="text-sm font-semibold">
           {label}
-          {isRequired && <span className="text-sm text-red-600">*</span>}
+          {isRequired && <span className="text-red-600">*</span>}
         </label>
         <Controller
           name={name}
@@ -146,7 +146,7 @@ export const FormSelect = forwardRef<HTMLSelectElement, FormSelectProps>(
           render={({ field }) => (
             <Select.Root
               onValueChange={field.onChange}
-              size="3"
+              size="2"
               defaultValue={defaultValue || ""}
               disabled={disabled}
             >

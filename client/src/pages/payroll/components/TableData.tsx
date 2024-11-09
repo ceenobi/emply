@@ -181,35 +181,33 @@ export default function TableData({ payroll, selectQuery }: PayrollUserProps) {
   );
 
   return (
-    <>
-      <Table.Root layout="auto" variant="surface" size="1">
-        <Table.Header>
-          <Table.Row>
-            {columns.map((item) => (
-              <Table.ColumnHeaderCell key={item.uid}>
-                {item.name}
-              </Table.ColumnHeaderCell>
-            ))}
-          </Table.Row>
-        </Table.Header>
-        <Table.Body>
-          {payroll
-            ?.filter((query: PayrollProps) =>
-              !selectQuery || selectQuery === "all"
-                ? query
-                : query.status === selectQuery
-            )
-            .map((user: PayrollProps) => (
-              <Table.Row key={user._id} align="center">
-                {columns.map((column) => (
-                  <Table.Cell key={column.uid}>
-                    {renderCell(user, column.uid)}
-                  </Table.Cell>
-                ))}
-              </Table.Row>
-            ))}
-        </Table.Body>
-      </Table.Root>
-    </>
+    <Table.Root layout="auto" variant="surface" size="1">
+      <Table.Header>
+        <Table.Row>
+          {columns.map((item) => (
+            <Table.ColumnHeaderCell key={item.uid}>
+              {item.name}
+            </Table.ColumnHeaderCell>
+          ))}
+        </Table.Row>
+      </Table.Header>
+      <Table.Body>
+        {payroll
+          ?.filter((query: PayrollProps) =>
+            !selectQuery || selectQuery === "all"
+              ? query
+              : query.status === selectQuery
+          )
+          .map((user: PayrollProps) => (
+            <Table.Row key={user._id} align="center">
+              {columns.map((column) => (
+                <Table.Cell key={column.uid}>
+                  {renderCell(user, column.uid)}
+                </Table.Cell>
+              ))}
+            </Table.Row>
+          ))}
+      </Table.Body>
+    </Table.Root>
   );
 }

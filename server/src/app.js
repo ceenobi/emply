@@ -13,6 +13,7 @@ import eventRoutes from "./routes/event.js";
 import userRoutes from "./routes/user.js";
 import leaveRoutes from "./routes/leave.js";
 import payrollRoutes from "./routes/payroll.js";
+import taskRoutes from "./routes/task.js";
 
 dotenv.config();
 const app = express();
@@ -71,6 +72,7 @@ app.use("/api/v1/events", eventRoutes);
 app.use("/api/v1/users", userRoutes);
 app.use("/api/v1/leaves", leaveRoutes);
 app.use("/api/v1/payroll", payrollRoutes);
+app.use("/api/v1/tasks", taskRoutes);
 
 app.use((req, res, next) => {
   return next(createHttpError(404, "Endpoint not found"));

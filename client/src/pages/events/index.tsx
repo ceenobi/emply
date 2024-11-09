@@ -40,7 +40,7 @@ export function Component() {
               <Headings text="Events" header={true} />
               <RouterLink
                 to="/events/create"
-                className="text-md font-semibold text-sky-100 bg-sky-300 p-2 rounded-lg"
+                className="text-md font-semibold text-sky-100"
                 text={
                   <button className="flex justify-center items-center gap-2 w-[140px] md:h-[36px] bg-sky-300 rounded-md">
                     <AiOutlinePlusCircle />

@@ -473,12 +473,24 @@ export const eventStatusColorMap: Record<string, BadgeProps["color"]> = {
 
 export const eventStatus = [
   {
+    _id: "1",
+    name: "upcoming",
+  },
+  {
+    _id: "2",
+    name: "ongoing",
+  },
+  {
+    _id: "3",
+    name: "postponed",
+  },
+  {
     _id: "4",
     name: "cancelled",
   },
   {
     _id: "5",
-    name: "postponed",
+    name: "ended",
   },
 ];
 
@@ -530,4 +542,15 @@ export const maritalStatus = [
   { _id: "2", name: "married" },
   { _id: "3", name: "divorced" },
   { _id: "4", name: "widowed" },
+];
+export const taskStatus = [
+  { _id: "1", name: "planned" },
+  { _id: "2", name: "inprogress" },
+  { _id: "3", name: "completed" },
+  { _id: "4", name: "postponed" },
+];
+export const taskPriority = [
+  { _id: "1", name: "low" },
+  { _id: "2", name: "medium" },
+  { _id: "3", name: "high" },
 ];

@@ -15,6 +15,8 @@ import {
   gender,
   jobType,
   maritalStatus,
+  taskStatus,
+  taskPriority,
 } from "./constants";
 import {
   renderDate,
@@ -50,4 +52,6 @@ export {
   gender,
   jobType,
   maritalStatus,
+  taskStatus,
+  taskPriority,
 };

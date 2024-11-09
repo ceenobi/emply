@@ -162,7 +162,7 @@ export default function Component() {
                 color: "var(--sky-100)",
                 cursor: "pointer",
               }}
-              size="3"
+              size="2"
               variant="soft"
               loading={isSubmitting}
               disabled={isSubmitting}
