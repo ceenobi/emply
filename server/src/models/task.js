@@ -38,7 +38,8 @@ const taskSchema = new Schema(
       default: [],
     },
     members: {
-      type: [String],
+      type: [Schema.Types.ObjectId],
+      ref: "User",
       default: [],
     },
   },

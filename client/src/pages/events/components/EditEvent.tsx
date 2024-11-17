@@ -186,7 +186,7 @@ export default function EditEvent({
                 </>
               }
               className="text-sm mb-4"
-            />
+            />           
             {photo && validators.isValidImage(photo) && (
               <Tooltip content="View image">
                 <a href={photo} target="_blank" rel="noopener">
@@ -230,7 +230,7 @@ export default function EditEvent({
           <div className="flex justify-between items-center">
             <div className="flex gap-2 items-center">
               <PiPersonArmsSpread />
-              <div className="flex gap-1 item-center rounded-2xl bg-cream-200 p-1">
+              <div className="flex gap-1 item-center rounded-lg bg-cream-200 p-1">
                 <Avatar
                   src={userId?.photo}
                   size="1"

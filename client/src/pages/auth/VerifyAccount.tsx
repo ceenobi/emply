@@ -1,6 +1,6 @@
 import { authService } from "@/api";
 import { ActionButton, Headings, RouterLink, Texts } from "@/components";
-import FloatingShape from "@/components/layouts/auth/FloatingShape";
+import FloatingShape from "@/layouts/auth/FloatingShape";
 import { useAuthProvider } from "@/store";
 import { Userinfo } from "@/types/user";
 import { handleError } from "@/utils";

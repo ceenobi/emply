@@ -30,10 +30,6 @@ export const createDepartment = tryCatch(async (req, res, next) => {
 });
 
 export const getDepartments = tryCatch(async (req, res, next) => {
-  //const cacheDepartments = cache.get("departments");
-  // if (cacheDepartments) {
-  //   return res.status(200).json(cacheDepartments);
-  // }
   const departments = await Dept.find();
   if (!departments) {
     return next(createHttpError(400, "No departments found"));
@@ -45,7 +41,6 @@ export const getDepartments = tryCatch(async (req, res, next) => {
     acc[dept] = (acc[dept] || 0) + 1;
     return acc;
   }, {});
-  //cache.set("departments", { departments, getDeptNames, deptCount });
   res.status(200).json({ departments, getDeptNames, deptCount });
 });
 

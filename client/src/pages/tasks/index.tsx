@@ -1,12 +1,19 @@
-import { Headings, Page, RouterLink } from "@/components";
+import { DataSpinner, Headings, Page, RouterLink, Texts } from "@/components";
 import { useAuthProvider } from "@/store";
 import { Userinfo } from "@/types/user";
+import { TaskData } from "@/types/task";
 import { Helmet } from "react-helmet-async";
 import { AiOutlinePlusCircle } from "react-icons/ai";
-import { Outlet, useMatch } from "react-router-dom";
+import { Outlet, useMatch, useLoaderData, Await } from "react-router-dom";
+import { Suspense } from "react";
+import Planned from "./components/Planned";
+import InProgress from "./components/InProgress";
+import Completed from "./components/Completed";
+import Postponed from "./components/Postponed";
 
 export function Component() {
   const { user } = useAuthProvider() as { user: Userinfo };
+  const { data } = useLoaderData() as { data: TaskData };
   const match = useMatch("/tasks");
   const roles = ["admin", "super-admin"];
 
@@ -35,6 +42,27 @@ export function Component() {
                   }
                 />
               )}
+            </div>
+            <div className="mt-6">
+              <Suspense fallback={<DataSpinner />}>
+                <Await
+                  resolve={data}
+                  errorElement={
+                    <Texts className="mt-8" text="Error loading data" />
+                  }
+                >
+                  {(resolvedData) => (
+                    <div className="w-full">
+                      <div className="lg:flex flex-wrap justify-between ">
+                        <Planned data={resolvedData} />
+                        <InProgress data={resolvedData} />
+                        <Completed data={resolvedData} />
+                        <Postponed data={resolvedData} />
+                      </div>
+                    </div>
+                  )}
+                </Await>
+              </Suspense>
             </div>
           </>
         ) : (

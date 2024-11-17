@@ -1,4 +1,4 @@
-import taskService from "@/api/taskService";
+import { taskService } from "@/api";
 import { TaskData } from "@/types/task";
 import { handleError } from "@/utils";
 
@@ -7,6 +7,25 @@ export const createTaskAction = async ({ request }: { request: Request }) => {
   const taskBody = Object.fromEntries(formData);
   try {
     const res = await taskService.createTask(taskBody as unknown as TaskData);
+    return res;
+  } catch (error) {
+    handleError(error);
+  }
+  return null;
+};
+
+export const updateTaskAction = async ({
+  request,
+}: {
+  request: Request;
+}) => {
+  const formData = await request.formData();
+  const taskBody = Object.fromEntries(formData);
+  try {
+    const res = await taskService.updateATask(
+      taskBody.id as string,
+      taskBody as unknown as TaskData
+    );
     return res;
   } catch (error) {
     handleError(error);

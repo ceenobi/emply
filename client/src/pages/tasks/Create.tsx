@@ -25,7 +25,6 @@ export function Component() {
   const [selectedMembersId, setSelectedMembersId] = useState<string[]>([]);
   const [tag, setTag] = useState<string>("");
   const [tags, setTags] = useState<string[]>([]);
-  //   const { user } = useAuthProvider() as { user: Userinfo };
   const {
     employees: { data },
   } = useRouteLoaderData("departments-employees") as {
@@ -80,22 +79,19 @@ export function Component() {
   };
 
   useEffect(() => {
-    if (member !== "") {
-      const result = data
-        .filter((item) =>
-          item.firstName.toLowerCase().includes(member.toLowerCase())
-        )
-        .map((item) => item);
-      setSelectedMembers((prev) => [...new Set([...prev, ...result])]);
+    if (member) {
+      const lowerCaseMember = member.toLowerCase();
+      const result = data.filter((item) =>
+        item.firstName.toLowerCase().includes(lowerCaseMember)
+      );
+      setSelectedMembers((prev) => Array.from(new Set([...prev, ...result])));
     } else {
-      setSelectedMembers(
-        selectedMembers.filter((item) =>
-          selectedMembersId.includes(item._id as string)
-        )
+      setSelectedMembers((prev) =>
+        prev.filter((item) => selectedMembersId.includes(item._id as string))
       );
     }
-  }, [data, member, selectedMembers, selectedMembersId]);
-
+  }, [data, member, selectedMembersId]);
+  
   const onFormSubmit = async (data: object) => {
     const formData = { ...data, tags, members: selectedMembersId };
     fetcher.submit(
@@ -121,8 +117,8 @@ export function Component() {
           onSubmit={handleSubmit(onFormSubmit)}
         >
           <div className="flex flex-wrap justify-between">
-            <div className="flex flex-wrap gap-3 items-center">
-              <CgMenuGridO />
+            <div className="flex flex-wrap gap-3">
+              <CgMenuGridO className="mt-1"/>
               <FormSelect
                 label="Select Status"
                 name="status"

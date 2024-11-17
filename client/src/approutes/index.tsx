@@ -18,6 +18,7 @@ import * as eventData from "@/pages/events/queries";
 import * as payrollData from "@/pages/payroll/queries";
 import * as settingsData from "@/pages/settings/queries";
 import * as departmentData from "@/pages/departments/queries";
+import * as taskData from "@/pages/tasks/queries";
 import * as departmentAction from "@/pages/departments/actions";
 import * as employeeAction from "@/pages/employees/actions";
 import * as leaveAction from "@/pages/leaves/actions";
@@ -29,8 +30,8 @@ import { useAuthProvider } from "@/store";
 import { Userinfo } from "@/types/user";
 import { ErrorBoundary } from "@/components";
 
-const AuthLayout = lazy(() => import("@/components/layouts/auth"));
-const RootLayout = lazy(() => import("@/components/layouts/root"));
+const AuthLayout = lazy(() => import("@/layouts/auth"));
+const RootLayout = lazy(() => import("@/layouts/root"));
 const RegisterEmployee = lazy(() => import("@/pages/employees/Register"));
 const EditEmployee = lazy(() => import("@/pages/employees/EditEmployee"));
 const AllLeavesPage = lazy(() => import("@/pages/leaves/AllLeaves"));
@@ -339,11 +340,25 @@ export default function AppRoutes() {
         {
           path: "tasks",
           lazy: () => import("@/pages/tasks"),
+          loader: async ({ request }) => {
+            const searchParams = new URL(request.url).searchParams;
+            const page = searchParams.get("page") || 1;
+            const data = taskData.getTasks(page);
+            return defer({ data });
+          },
           children: [
             {
               path: "create",
               lazy: () => import("@/pages/tasks/Create"),
               action: taskAction.createTaskAction,
+            },
+            {
+              path: ":taskId/edit",
+              lazy: () => import("@/pages/tasks/Edit"),
+              loader: ({ params }) => {
+                const data = taskData.getATask(params.taskId as string);
+                return data;
+              },
             },
           ],
         },
