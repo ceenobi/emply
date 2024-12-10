@@ -27,8 +27,9 @@ import * as settingsAction from "@/pages/settings/actions";
 import * as payrollAction from "@/pages/payroll/actions";
 import * as taskAction from "@/pages/tasks/actions";
 import { useAuthProvider } from "@/store";
-import { Userinfo } from "@/types/user";
+// import { Userinfo } from "@/types/user";
 import { ErrorBoundary } from "@/components";
+import { Userinfo } from "@/types/user";
 
 const AuthLayout = lazy(() => import("@/layouts/auth"));
 const RootLayout = lazy(() => import("@/layouts/root"));
