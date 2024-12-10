@@ -201,6 +201,13 @@ export default function VerifyAccount() {
               />
             </Form>
             <Texts text="OR" className="text-center my-2" />
+            <div className="text-center">
+              <RouterLink
+                to="/"
+                text="Go Home"
+                className="font-semibold"
+              />
+            </div>
           </Card>
         </div>
       </main>
