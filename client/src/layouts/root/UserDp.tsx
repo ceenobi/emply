@@ -8,7 +8,7 @@ export default function UserDp({ user }: { user: Userinfo }) {
       <Avatar
         size="3"
         src={user?.photo}
-        fallback={user?.firstName.slice(0, 1)}
+        fallback={user?.firstName?.slice(0, 1)}
         variant="soft"
       />
       <div className="hidden md:flex flex-col">
