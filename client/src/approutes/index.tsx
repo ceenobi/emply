@@ -400,9 +400,11 @@ export default function AppRoutes() {
     {
       path: "verify-account",
       element: (
-        <Suspense fallback={<LazySpinner />}>
-          <VerifyAccount />B
-        </Suspense>
+        <PrivateRoutes>
+          <Suspense fallback={<LazySpinner />}>
+            <VerifyAccount />B
+          </Suspense>
+        </PrivateRoutes>
       ),
     },
   ] as RouteObject[];
