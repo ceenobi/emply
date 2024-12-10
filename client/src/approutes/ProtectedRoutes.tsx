@@ -12,10 +12,11 @@ export const PrivateRoutes: React.FC<{
   };
   if (!isAuthenticated) {
     return <Navigate to="/login" replace />;
-  } else if (isAuthenticated && !user.isVerified) {
-    toast.info("Please verify your email to access your dashboard");
-    return <Navigate to="/verify-account" replace />;
-  }
+  } 
+  // else if (isAuthenticated && !user.isVerified) {
+  //   toast.info("Please verify your email to access your dashboard");
+  //   return <Navigate to="/verify-account" replace />;
+  // }
   return children;
 };
 

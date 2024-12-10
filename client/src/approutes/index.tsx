@@ -27,7 +27,6 @@ import * as settingsAction from "@/pages/settings/actions";
 import * as payrollAction from "@/pages/payroll/actions";
 import * as taskAction from "@/pages/tasks/actions";
 import { useAuthProvider } from "@/store";
-// import { Userinfo } from "@/types/user";
 import { ErrorBoundary } from "@/components";
 import { Userinfo } from "@/types/user";
 
@@ -402,7 +401,7 @@ export default function AppRoutes() {
       element: (
         <PrivateRoutes>
           <Suspense fallback={<LazySpinner />}>
-            <VerifyAccount />B
+            <VerifyAccount />
           </Suspense>
         </PrivateRoutes>
       ),

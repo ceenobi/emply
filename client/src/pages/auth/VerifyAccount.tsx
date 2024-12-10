@@ -25,7 +25,7 @@ export default function VerifyAccount() {
 
   useEffect(() => {
     if (user?.isVerified) {
-      navigate(from);
+      navigate(from, { replace: true });
     }
   }, [from, navigate, user?.isVerified]);
 
@@ -202,11 +202,7 @@ export default function VerifyAccount() {
             </Form>
             <Texts text="OR" className="text-center my-2" />
             <div className="text-center">
-              <RouterLink
-                to="/"
-                text="Go Home"
-                className="font-semibold"
-              />
+              <RouterLink to="/" text="Go Home" className="font-semibold" />
             </div>
           </Card>
         </div>
