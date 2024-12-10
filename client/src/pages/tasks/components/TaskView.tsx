@@ -3,12 +3,22 @@ import { useAuthProvider } from "@/store";
 import { TaskData } from "@/types/task";
 import { Userinfo } from "@/types/user";
 import { renderDate } from "@/utils";
-import { Avatar, Badge, Separator, Tooltip } from "@radix-ui/themes";
+import {
+  Avatar,
+  Badge,
+  Button,
+  Popover,
+  Separator,
+  Tooltip,
+} from "@radix-ui/themes";
 import { Helmet } from "react-helmet-async";
 import { FaEdit, FaRegCalendarAlt } from "react-icons/fa";
 import { PiPersonArmsSpread } from "react-icons/pi";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useFetcher } from "react-router-dom";
 import { TiGroupOutline } from "react-icons/ti";
+import { RiErrorWarningFill } from "react-icons/ri";
+import { useEffect } from "react";
+import { toast } from "sonner";
 
 export default function TaskView({
   task,
@@ -21,6 +31,7 @@ export default function TaskView({
 }) {
   const { user } = useAuthProvider() as { user: Userinfo };
   const navigate = useNavigate();
+  const fetcher = useFetcher();
   const {
     title,
     description,
@@ -31,11 +42,33 @@ export default function TaskView({
     _id,
     members,
     priority,
+    tags,
   } = task;
   const taskTime = { startDate, endDate };
+  const isSubmitting = fetcher.state === "submitting";
+
+  useEffect(() => {
+    if (fetcher && fetcher.data && fetcher.data?.status === 200) {
+      toast.success(fetcher.data.data.msg as string, {
+        id: "delete-task-success",
+      });
+      setOpenCard(false);
+      navigate("/tasks");
+    }
+  }, [navigate, fetcher, setOpenCard]);
 
   const handleClose = () => {
     setOpenCard?.(false);
+  };
+
+  const deleteTask = () => {
+    fetcher.submit(
+      { id: _id as string },
+      {
+        method: "delete",
+        action: "/tasks",
+      }
+    );
   };
 
   return (
@@ -49,13 +82,13 @@ export default function TaskView({
           <Badge
             color={
               status === "planned"
-                ? "jade"
+                ? "indigo"
                 : status === "inprogress"
-                  ? "crimson"
+                  ? "amber"
                   : status === "completed"
                     ? "violet"
                     : status === "postponed"
-                      ? "yellow"
+                      ? "crimson"
                       : "indigo"
             }
             size="2"
@@ -103,6 +136,24 @@ export default function TaskView({
               <>
                 <b>Priority: </b>
                 {priority}
+              </>
+            }
+            className="text-sm mb-4 capitalize"
+          />
+          <Texts
+            text={
+              <>
+                <b>Tags: </b>
+                {tags.map((tag) => (
+                  <Badge
+                    color="sky"
+                    key={tag}
+                    className="capitalize mr-2"
+                    variant="soft"
+                  >
+                    {tag}
+                  </Badge>
+                ))}
               </>
             }
             className="text-sm mb-4 capitalize"
@@ -167,7 +218,7 @@ export default function TaskView({
           </div>
         </div>
         <Separator my="3" size="4" />
-        <div className="mt-4 text-end">
+        <div className="mt-4 flex justify-end items-center gap-4">
           <ActionButton
             type="button"
             text="Cancel"
@@ -177,6 +228,42 @@ export default function TaskView({
             style={{ cursor: "pointer" }}
             onClick={handleClose}
           />
+          {user._id === userId?._id && (
+            <fetcher.Form>
+              <Popover.Root>
+                <Popover.Trigger>
+                  <div>
+                    <Button color="red">Delete</Button>
+                  </div>
+                </Popover.Trigger>
+                <Popover.Content
+                  size="1"
+                  maxWidth="200px"
+                  side="left"
+                  sideOffset={30}
+                >
+                  <div className="flex gap-1 items-center mb-2">
+                    <RiErrorWarningFill color="orange" />
+                    <div className="text-tiny">Are you sure?</div>
+                  </div>
+                  <ActionButton
+                    size="1"
+                    variant="soft"
+                    color="crimson"
+                    type="submit"
+                    onClick={deleteTask}
+                    disabled={isSubmitting}
+                    loading={isSubmitting}
+                    text={isSubmitting ? "Deleting" : "Delete"}
+                    style={{
+                      width: "100%",
+                      cursor: "pointer",
+                    }}
+                  />
+                </Popover.Content>
+              </Popover.Root>
+            </fetcher.Form>
+          )}
         </div>
       </InfoBox>
     </>

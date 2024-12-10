@@ -7,6 +7,8 @@ import {
   createTaskService,
   updateTaskService,
 } from "../services/task.service.js";
+import User from "../models/user.js";
+import { Roles } from "../middleware/auth.js";
 
 export const createATask = tryCatch(async (req, res, next) => {
   const {
@@ -50,7 +52,7 @@ export const getAllTask = tryCatch(async (req, res, next) => {
     .skip(skipCount)
     .limit(limit);
   if (!tasks) {
-    return next(createHttpError(400, "No events found"));
+    return next(createHttpError(400, "No tasks found"));
   }
   const data = {
     currentPage: page,
@@ -72,7 +74,6 @@ export const getATask = tryCatch(async (req, res, next) => {
   if (!task) {
     return next(createHttpError(400, "Task not found"));
   }
-  // cache.set("department", department);
   res.status(200).json(task);
 });
 
@@ -82,7 +83,7 @@ export const updateTask = tryCatch(async (req, res, next) => {
   const {
     title,
     description,
-    startDate,    
+    startDate,
     endDate,
     status,
     members,
@@ -93,9 +94,19 @@ export const updateTask = tryCatch(async (req, res, next) => {
   if (!taskId) {
     return next(createHttpError(400, "Task id params is required"));
   }
+  if (!isValidObjectId(taskId) || !taskId) {
+    return next(createHttpError(400, "Invalid task ID"));
+  }
   const findTask = await Task.findById(taskId);
   if (!findTask) {
     return next(createHttpError(400, "Task not found"));
+  }
+  const getUser = await User.findById(userId);
+  if (
+    findTask.userId.toString() !== userId &&
+    Roles.Admin.includes(getUser.role)
+  ) {
+    return next(createHttpError(403, "Unauthorized to update this task"));
   }
   const taskBody = {
     title,
@@ -109,4 +120,22 @@ export const updateTask = tryCatch(async (req, res, next) => {
   };
   const task = await updateTaskService(taskId, taskBody);
   res.status(200).json({ task, msg: "Task updated" });
+});
+
+export const deleteTask = tryCatch(async (req, res, next) => {
+  const userId = req.userId;
+  const { taskId } = req.params;
+  if (!isValidObjectId(taskId) || !taskId) {
+    return next(createHttpError(400, "Invalid task ID"));
+  }
+  const getUser = await User.findById(userId);
+  const task = await Task.findById(taskId);
+  if (!task) {
+    return next(createHttpError(404, "Task not found"));
+  }
+  if (task.userId.toString() !== userId && Roles.Admin.includes(getUser.role)) {
+    return next(createHttpError(403, "Unauthorized to delete this task"));
+  }
+  await task.deleteOne();
+  res.status(200).json({ msg: "Task deleted!" });
 });

@@ -41,10 +41,10 @@ app.use(
     saveUninitialized: false,
     cookie: {
       maxAge: 60 * 60 * 1000,
-      // secure: process.env.NODE_ENV === "production",
-      // sameSite: "None",
-      // httpOnly: true,
-      // path: "/",
+      secure: process.env.NODE_ENV === "production", // HTTPS only in production
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+      maxAge: 60 * 60 * 1000, // 1 hour
+      path: "/", // Cookie is accessible on all paths
     },
     rolling: true,
     store: MongoStore.create({

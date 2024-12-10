@@ -10,7 +10,10 @@ const getATask = async (taskId: string) => {
   return await http.get(`/tasks/${taskId}`);
 };
 const updateATask = async (taskId: string, formData: TaskData) => {
-  return await http.patch(`/tasks/${taskId}/edit`, formData);
+  return await http.patch(`/tasks/${taskId}`, formData);
+};
+const deleteATask = async (taskId: string) => {
+  return await http.delete(`/tasks/${taskId}`);
 };
 
-export default { createTask, getAllTask, getATask, updateATask };
+export default { createTask, getAllTask, getATask, updateATask, deleteATask };

@@ -18,7 +18,7 @@ import {
 import { Badge, TextField } from "@radix-ui/themes";
 import { Suspense, useEffect, lazy, useState } from "react";
 import { Helmet } from "react-helmet-async";
-import { Controller, useForm } from "react-hook-form";
+import { Controller, useForm, FieldValues } from "react-hook-form";
 import { CgMenuGridO } from "react-icons/cg";
 import { CiEdit, CiShoppingTag } from "react-icons/ci";
 import { HiOutlineUserAdd } from "react-icons/hi";
@@ -64,7 +64,6 @@ export function Component() {
       setValue("priority", data.priority);
       setValue("startDate", formatEditDate(data.startDate));
       setValue("endDate", formatEditDate(data?.endDate as string));
-      setValue("tags", data.tags);
       setTags([...data.tags]);
     }
   }, [data, setValue]);
@@ -144,10 +143,15 @@ export function Component() {
     navigate(-1);
   };
 
-  const onFormSubmit = async (data: TaskData) => {
-    const formData = { ...data, tags, members: selectedMembersId };
+  const onFormSubmit = async (formFields: TaskData) => {
+    const formData = {
+      ...formFields,
+      tags,
+      members: selectedMembersId,
+      id: data._id,
+    };
     fetcher.submit(
-      { ...formData, id: data._id },
+      { ...formData },
       { method: "patch", action: `/tasks/${data._id}/edit` }
     );
   };
@@ -169,97 +173,104 @@ export function Component() {
           <fetcher.Form
             method="post"
             action={`/tasks/${data._id}/edit`}
-            onSubmit={handleSubmit(onFormSubmit)}
+            onSubmit={handleSubmit((formFields: FieldValues) =>
+              onFormSubmit(formFields as TaskData)
+            )}
           >
-            <div className="flex flex-wrap justify-between">
-              <div className="flex flex-wrap gap-3">
-                <CgMenuGridO className="mt-1" />
-                <FormSelect
-                  label="Select Status"
-                  name="status"
-                  id="status"
-                  register={register}
-                  errors={errors}
-                  placeholder="None selected"
-                  data={taskStatus}
-                  validate={(value) =>
-                    validators.validateField(value, "Please select a status")
-                  }
-                  control={control}
-                  isRequired
-                  defaultValue={data.status}
-                />
-                <FormSelect
-                  label="Priority"
-                  name="priority"
-                  id="priority"
-                  register={register}
-                  errors={errors}
-                  placeholder="None selected"
-                  data={taskPriority}
-                  validate={(value) =>
-                    validators.validateField(value, "Please set task priority")
-                  }
-                  control={control}
-                  isRequired
-                  defaultValue={data.priority}
-                />
-              </div>
-              <div className="flex flex-wrap gap-3">
-                {inputFields
-                  .filter((item) => formFields.includes(item.name))
-                  .map(
-                    ({
-                      type,
-                      id,
-                      name,
-                      label,
-                      placeholder,
-                      Icon,
-                      validate,
-                      isRequired,
-                    }) => (
-                      <FormInput
-                        type={type || undefined}
-                        id={id}
-                        name={name}
-                        register={register}
-                        label={label === "End Date" ? "Due Date" : label}
-                        placeholder={placeholder}
-                        key={id}
-                        errors={errors}
-                        Icon={Icon}
-                        validate={(value) => validate(value) || undefined}
-                        isRequired={isRequired}
-                      />
-                    )
-                  )}
-              </div>
-              <div>
-                <label htmlFor="members" className="text-sm font-semibold">
-                  Create tag<span className="text-red-400">*</span>
-                </label>
-                <TextField.Root
-                  placeholder="Create tags"
-                  size="2"
-                  className="mt-1"
-                  value={tag.toLowerCase()}
-                  onChange={(e) => setTag(e.target.value)}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter") {
-                      e.preventDefault();
-                      const currentInput = e.currentTarget.value
-                        .split(", ")
-                        .filter((tag) => tag);
-                      handleTags(currentInput);
-                      e.currentTarget.value = "";
+            <div className="flex gap-3">
+              <CgMenuGridO className="mt-1" />
+              <div className="flex flex-wrap justify-between items-center w-full">
+                <div className="flex gap-3">
+                  <FormSelect
+                    label="Select Status"
+                    name="status"
+                    id="status"
+                    register={register}
+                    errors={errors}
+                    placeholder="None selected"
+                    data={taskStatus}
+                    validate={(value) =>
+                      validators.validateField(value, "Please select a status")
                     }
-                  }}
-                >
-                  <TextField.Slot>
-                    <CiShoppingTag />
-                  </TextField.Slot>
-                </TextField.Root>
+                    control={control}
+                    isRequired
+                    defaultValue={data.status}
+                  />
+                  <FormSelect
+                    label="Priority"
+                    name="priority"
+                    id="priority"
+                    register={register}
+                    errors={errors}
+                    placeholder="None selected"
+                    data={taskPriority}
+                    validate={(value) =>
+                      validators.validateField(
+                        value,
+                        "Please set task priority"
+                      )
+                    }
+                    control={control}
+                    isRequired
+                    defaultValue={data.priority}
+                  />
+                </div>
+                <div className="flex flex-wrap gap-3">
+                  {inputFields
+                    .filter((item) => formFields.includes(item.name))
+                    .map(
+                      ({
+                        type,
+                        id,
+                        name,
+                        label,
+                        placeholder,
+                        Icon,
+                        validate,
+                        isRequired,
+                      }) => (
+                        <FormInput
+                          type={type || undefined}
+                          id={id}
+                          name={name}
+                          register={register}
+                          label={label === "End Date" ? "Due Date" : label}
+                          placeholder={placeholder}
+                          key={id}
+                          errors={errors}
+                          Icon={Icon}
+                          validate={(value) => validate(value) || undefined}
+                          isRequired={isRequired}
+                        />
+                      )
+                    )}
+                </div>
+                <div>
+                  {/* <label htmlFor="members" className="text-sm font-semibold">
+                    Create tag<span className="text-red-400">*</span>
+                  </label> */}
+                  <TextField.Root
+                    placeholder="Create tags"
+                    size="2"
+                    className="mt-1"
+                    value={tag.toLowerCase()}
+                    onChange={(e) => setTag(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        e.preventDefault();
+                        const currentInput = e.currentTarget.value
+                          .split(", ")
+                          .filter((tag) => tag);
+                        handleTags(currentInput);
+                        e.currentTarget.value = "";
+                      }
+                    }}
+                  >
+                    <TextField.Slot>
+                      <CiShoppingTag />
+                    </TextField.Slot>
+                  </TextField.Root>
+                </div>
               </div>
             </div>
             <div className="my-6 flex gap-3">

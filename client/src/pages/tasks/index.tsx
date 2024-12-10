@@ -52,13 +52,11 @@ export function Component() {
                   }
                 >
                   {(resolvedData) => (
-                    <div className="w-full">
-                      <div className="lg:flex flex-wrap justify-between ">
-                        <Planned data={resolvedData} />
-                        <InProgress data={resolvedData} />
-                        <Completed data={resolvedData} />
-                        <Postponed data={resolvedData} />
-                      </div>
+                    <div className="md:grid md:grid-cols-2 lg:grid-cols-4 justify-between gap-4">
+                      <Planned data={resolvedData} />
+                      <InProgress data={resolvedData} />
+                      <Completed data={resolvedData} />
+                      <Postponed data={resolvedData} />
                     </div>
                   )}
                 </Await>

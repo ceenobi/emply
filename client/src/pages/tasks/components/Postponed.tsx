@@ -1,4 +1,4 @@
-import { Texts } from "@/components";
+import { RouterLink, Texts } from "@/components";
 import { TaskData } from "@/types/task";
 import { renderDate } from "@/utils";
 import { getRandomColor } from "@/utils/constants";
@@ -14,20 +14,24 @@ export default function Postponed({ data }: Dataprops) {
     (task: TaskData) => task.status === "postponed"
   );
   return (
-    <div className="min-w-full lg:min-w-[300px] mb-6">
+    <div className="min-w-full mb-6">
       <div className="flex justify-between items-center mb-6">
         <Texts
           text={
             <>
               <span className="mr-3">Postponed</span>
-              <Badge variant="solid" color="indigo">
+              <Badge variant="solid" color="red">
                 {postponedTasks?.length}
               </Badge>
             </>
           }
           className="uppercase font-semibold text-sm"
         />
-        <CiCirclePlus size="24px" />
+        <RouterLink
+          text={<CiCirclePlus size="24px" />}
+          to="/tasks/postponed"
+          className=""
+        />
       </div>
       {postponedTasks.length > 0 ? (
         <>
@@ -48,7 +52,7 @@ export default function Postponed({ data }: Dataprops) {
                 <Separator size="4" className="my-2" />
                 <div className="flex justify-between items-center">
                   <Texts
-                    className="text-sm text-sky-300"
+                    className="text-[12px] text-sky-300"
                     text={renderDate(task)}
                   />
                   <Tooltip
@@ -73,7 +77,10 @@ export default function Postponed({ data }: Dataprops) {
           className={`hover:opacity-80 hover:transition duration-150 ease-in cursor-pointer border-l-4 shadow-md`}
           style={{ borderLeftColor: getRandomColor("red") }}
         >
-          <Texts text="There are no postponed tasks to display" />
+          <Texts
+            text="There are no postponed tasks to display"
+            className="text-sm"
+          />
         </Card>
       )}
     </div>

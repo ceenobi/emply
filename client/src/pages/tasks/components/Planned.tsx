@@ -1,4 +1,4 @@
-import { Texts } from "@/components";
+import { RouterLink, Texts } from "@/components";
 import { TaskData } from "@/types/task";
 import { renderDate } from "@/utils";
 import { getRandomColor } from "@/utils/constants";
@@ -15,7 +15,7 @@ export default function Planned({ data }: Dataprops) {
   const [active, setActive] = useState(0);
   const [openCard, setOpenCard] = useState(false);
   console.log(data);
-  
+
   const plannedTasks = data?.data?.tasks.filter(
     (task: TaskData) => task.status === "planned"
   );
@@ -25,7 +25,7 @@ export default function Planned({ data }: Dataprops) {
   };
 
   return (
-    <div className="min-w-full lg:min-w-[300px] mb-6">
+    <div className="min-w-full mb-6">
       <div className="flex justify-between items-center mb-6">
         <Texts
           text={
@@ -38,7 +38,7 @@ export default function Planned({ data }: Dataprops) {
           }
           className="uppercase font-semibold text-sm"
         />
-        <CiCirclePlus size="24px" />
+        <RouterLink text={<CiCirclePlus size="24px" />} to="/tasks/planned"  className="" />
       </div>
       {plannedTasks.length > 0 ? (
         <>
@@ -60,7 +60,7 @@ export default function Planned({ data }: Dataprops) {
                 <Separator size="4" className="my-2" />
                 <div className="flex justify-between items-center">
                   <Texts
-                    className="text-sm text-sky-300"
+                    className="text-[12px] text-sky-300"
                     text={renderDate(task)}
                   />
                   <Tooltip
@@ -92,7 +92,7 @@ export default function Planned({ data }: Dataprops) {
           className={`hover:opacity-80 hover:transition duration-150 ease-in cursor-pointer border-l-4 shadow-md`}
           style={{ borderLeftColor: getRandomColor("red") }}
         >
-          <Texts text="There are no planned tasks yet" />
+          <Texts text="There are no planned tasks yet" className="text-sm" />
         </Card>
       )}
     </div>

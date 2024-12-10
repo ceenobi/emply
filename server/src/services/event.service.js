@@ -67,16 +67,9 @@ export const checkEventStatus = async (events) => {
 };
 
 export const updateEventDetails = async (eventId, eventBody) => {
-  const { title, description, startDate, endDate, time, location, status } =
-    eventBody;
   const updatedFields = {
-    title,
-    description,
-    startDate,
-    endDate: endDate === "null" ? null : endDate,
-    time,
-    location,
-    status,
+    ...eventBody,
+    endDate: eventBody.endDate === "null" ? null : eventBody.endDate,
   };
   Object.keys(updatedFields).forEach(
     (key) =>

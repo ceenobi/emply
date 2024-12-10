@@ -346,6 +346,7 @@ export default function AppRoutes() {
             const data = taskData.getTasks(page);
             return defer({ data });
           },
+          action: taskAction.deleteTaskAction,
           children: [
             {
               path: "create",
@@ -359,6 +360,11 @@ export default function AppRoutes() {
                 const data = taskData.getATask(params.taskId as string);
                 return data;
               },
+              action: taskAction.updateTaskAction,
+            },
+            {
+              path: ":taskStatus",
+              lazy: () => import("@/pages/tasks/Tasks"),
             },
           ],
         },
