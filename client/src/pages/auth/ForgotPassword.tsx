@@ -54,6 +54,7 @@ export function Component() {
             errors={errors}
             Icon={Icon}
             validate={(value) => validate(value) || undefined}
+            isRequired
           />
         ))}
       <ActionButton

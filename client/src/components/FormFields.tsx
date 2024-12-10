@@ -24,7 +24,7 @@ interface FormInputProps {
   setIsVisible?: (isVisible: boolean) => void;
   validate?: (value: string) => boolean | string | undefined;
   defaultValue?: string | undefined | object;
-  isRequired: boolean;
+  isRequired?: boolean;
   disabled?: boolean;
 }
 
@@ -77,7 +77,7 @@ export const FormInput = ({
   };
 
   return (
-    <fieldset className="mb-4 flex flex-col gap-2" {...rest}>
+    <div className="mb-4 flex flex-col gap-2" {...rest}>
       <label htmlFor={id} className="text-sm font-semibold">
         {label} {isRequired && <span className="text-red-600">*</span>}
       </label>
@@ -112,7 +112,7 @@ export const FormInput = ({
           {errors[name]?.message as string}
         </span>
       )}
-    </fieldset>
+    </div>
   );
 };
 
@@ -134,7 +134,7 @@ export const FormSelect = forwardRef<HTMLSelectElement, FormSelectProps>(
     ref
   ) => {
     return (
-      <fieldset className="mb-4 flex flex-col gap-2">
+      <div className="mb-4 flex flex-col gap-2">
         <label htmlFor={id} className="text-sm font-semibold">
           {label}
           {isRequired && <span className="text-red-600">*</span>}
@@ -174,7 +174,7 @@ export const FormSelect = forwardRef<HTMLSelectElement, FormSelectProps>(
             {errors[name]?.message as string}
           </span>
         )}
-      </fieldset>
+      </div>
     );
   }
 );
